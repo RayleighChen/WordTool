@@ -17,21 +17,6 @@ public class FileTool {
 	private static Properties props;
 	private static FileInputStream fis;
 
-	static {
-		props = new Properties();
-		try {
-			fis = new FileInputStream("res/SDM.properties");
-			props.load(fis);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}
-
 	private static void copy(String source, String target) {
 		try {
 			int bytesum = 0;
@@ -54,58 +39,68 @@ public class FileTool {
 	}
 
 
-	public String[] readFolder() {
-		File file = new File(props.getProperty("rootpath"));
+	private static String[] readFolder(String root) {
+		File file = new File(root);
 		if (file.isDirectory()) {
-			String[] fileList = file.list();
+			String[] fileList = file.list(new DocFilter());
 			return fileList;
 		}
 		return null;
 	}
 
-	public void createFileTree(String root, ArrayList<String> filesList)
-			throws Exception {
-
-		File rootFolder = new File(props.getProperty("rootpath") + root);
-		if (!rootFolder.exists()) {
-			if (!rootFolder.mkdir()) {
-				throw new Exception("Ŀ¼�����ڣ�����ʧ�ܣ�");
-			}
-			copy(props.getProperty("modelfilepath").toString()
-					+ props.getProperty("modelfile1name").toString(), props
-					.getProperty("rootpath")
-					+ root + "/" + props.getProperty("modelfile1name"));
+	private static String[] getFolder(String root) {
+		File file = new File(root);
+		String[] files = null;
+		if (file.isDirectory()) {
+			files = file.list();
 		}
-		new File(props.getProperty("rootpath") + root + "/PDM").mkdir();
-		new File(props.getProperty("rootpath") + root + "/PDM/SDM").mkdir();
+		
+		ArrayList<String> folder = new ArrayList<String>();
+		for (int i = 0; i < files.length; i++) {
+			
+			if (new File(root + "/" + files[i]).isDirectory()) {
+				folder.add(files[i]);
+			}
+		}
+		return (String [])folder.toArray(new String[folder.size()]);
+	}
+	
+	public static void createFileTree(String root) {
 
-		File SDMFolder = new File(props.getProperty("sdmfilsall"));
-		String[] existFilesList = removeNotExist((String[]) filesList
-				.toArray(new String[filesList.size()]), SDMFolder
-				.list(new DocFilter()));
+		String[] existFilesList = getNewFiles(root);
 
 		for (int i = 0; i < existFilesList.length; i++) {
-			copy(
-					props.getProperty("sdmfilsall").toString()
-							+ existFilesList[i], props.getProperty("rootpath")
-							+ root + "/PDM/SDM/" + existFilesList[i]);
+			new File(root + "/" + existFilesList[i]).mkdir();
+			new File(root + "/" + existFilesList[i] + "/原搞").mkdir();
+			new File(root + "/" + existFilesList[i] + "/拆分后").mkdir();
 		}
-		new File(props.getProperty("rootpath") + root + "/PDM/SDM/log").mkdir();
-		new File(props.getProperty("rootpath") + root + "/PDM/初始�?log").mkdir();
-		new File(props.getProperty("rootpath") + root + "/SA").mkdir();
-		new File(props.getProperty("rootpath") + root + "/打包").mkdir();
-		new File(props.getProperty("rootpath") + root + "/应用").mkdir();
-		copy(props.getProperty("modelfilepath").toString()
-				+ props.getProperty("modelfile2name").toString(), props
-				.getProperty("rootpath")
-				+ root + "/应用/" + props.getProperty("modelfile2name"));
-		new File(props.getProperty("rootpath") + root + "/应用/初始�?log").mkdir();
-		new File(props.getProperty("rootpath") + root + "/应用/周期脚本").mkdir();
-		new File(props.getProperty("rootpath") + root + "/应用/周期脚本/log").mkdir();
-
-		System.out.println("OK");
+		
+		String[] files = readFolder(root);
+		for (int i = 0; i < files.length; i++) {
+			copy(root + "/" + files[i], root + "/" + files[i].substring(0, files[i].lastIndexOf('.')) + "/原搞/" + files[i]);
+			
+		}
 	}
+	
+	public static void mkdir(String root) {
+		new File(root).mkdir();
+	}
+	
+	public static String[] getNewFiles(String root){
+		String[] filesList = readFolder(root);
+		for (int i = 0; i < filesList.length; i++) {
+			if ((filesList[i] != null) && (filesList[i].length() > 0)) {
+				int dot = filesList[i].lastIndexOf('.');
+				if ((dot > -1) && (dot < filesList[i].length())) {
+					filesList[i] = filesList[i].substring(0, dot);
+				}
+			}
+		}
 
+		String[] folderList = getFolder(root);
+		String[] existFilesList = removeNotExist(filesList, folderList);
+		return existFilesList;
+	}
 	private static String[] removeNotExist(String[] target, String[] source) {
 		HashMap<String, Integer> isExistMap = new HashMap<String, Integer>();
 		for (int i = 0; i < target.length; i++) {
@@ -126,18 +121,21 @@ public class FileTool {
 				existFiles.add(filename);
 			}
 			if (isExistMap.get(filename) == 0) {
-				System.err.println("ERROR: " + filename + "文件没找到！");
+				existFiles.add(filename);
+				System.out.println("新增文件夹: " + filename);
 			}
 		}
 
 		return (String[]) existFiles.toArray(new String[existFiles.size()]);
 	}
 
-	private class DocFilter implements FilenameFilter {
+	private static class DocFilter implements FilenameFilter {
 		@Override
 		public boolean accept(File dir, String fname) {
 			// TODO Auto-generated method stub
-			return fname.toLowerCase().endsWith(".doc") ? true : false;
+			boolean flagDoc = fname.toLowerCase().endsWith(".doc") ? true : false;
+			boolean flagDocx = fname.toLowerCase().endsWith(".docx") ? true : false;
+			return flagDoc | flagDocx ;
 		}
 
 	}
