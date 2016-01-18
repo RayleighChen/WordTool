@@ -26,7 +26,7 @@ public class MyTest {
 		
 		DocBean docBean = new DocBean();
 		
-		docBean.setRoot("file:///E:/Learning/helpOthers/sd/Test");
+		docBean.setRoot("E:/Learning/helpOthers/sd/Test");
 		XmlUtil xmlUtil = new XmlUtil(docBean);
 		xmlUtil.modifyMsg();
 //		xmlUtil.getIndexOfBean(0);

@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.rayleigh.nina.bean.DocBean;
+import com.rayleigh.nina.log.ConsoleTextPane;
 import com.rayleigh.nina.util.XmlUtil;
 
 public class MainUI extends JDialog {
@@ -125,6 +126,15 @@ public class MainUI extends JDialog {
 
 		JButton comfitmBt = new JButton("确定");
 		comfitmBt.setBounds(713, 16, 93, 28);
+		comfitmBt.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				process();
+				
+			}
+		});
 		frmD.getContentPane().add(comfitmBt);
 	}
 
@@ -142,5 +152,11 @@ public class MainUI extends JDialog {
 				docUtil.modifyMsg();
 			}
 		}
+	}
+	
+	private void process() {
+		ConsoleTextPane.getInstance().clearLog();
+		System.out.println("早点实现能力！");
+		System.err.println("看见没有呢~~0~");
 	}
 }
