@@ -9,7 +9,7 @@ public class TestDocPage {
 	
 	 public static void main (String [] args) throws Exception {
 		 
-		   String filePath = "E:\\test.doc";
+		   String filePath = "D:\\参考.doc";
 		   
 		   ActiveXComponent word=new ActiveXComponent("Word.Application");
 		   

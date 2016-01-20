@@ -301,7 +301,7 @@ public class Jacob {
 	public static void openAnExistsFileTest() {
 		WordBean wordBean = new WordBean();
 		wordBean.setVisible(true); // 是否前台打开word 程序，或者后台运行
-		wordBean.openFile("d://a.doc");
+		wordBean.openFile("D:\\1.docx");
 		wordBean.insertJpeg("D:" + File.separator + "a.jpg"); // 插入图片(注意刚打开的word
 		// ，光标处于开头，故，图片在最前方插入)
 		wordBean.save();
@@ -332,11 +332,14 @@ public class Jacob {
 		wordBean.mergeCellTest();
 	}
 	public static void main(String[] args) {
+
 		// 进行测试前要保证d://a.jpg 图片文件存在
 		// createANewFileTest();//创建一个新文件
 		// openAnExistsFileTest();// 打开一个存在 的文件
-		// insertFormatStr("格式 化字符串");//对字符串进行一定的修饰
-		//insertTableTest();// 创建一个表格
-	   mergeTableCellTest();// 对表格中的单元格进行合并
+		 insertFormatStr("格式 化字符串");//对字符串进行一定的修饰
+		 insertFormatStr("233格式 化字符串");//对字符串进行一定的修饰
+//		insertTableTest();// 创建一个表格
+		 openAnExistsFileTest();
+	   //mergeTableCellTest();// 对表格中的单元格进行合并
 	}
 }

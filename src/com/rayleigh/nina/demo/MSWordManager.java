@@ -1,13 +1,9 @@
 package com.rayleigh.nina.demo;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
 
 import com.jacob.activeX.ActiveXComponent;
+import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
@@ -20,7 +16,7 @@ public class MSWordManager {
 
 	// 所有word文档集合
 	private Dispatch documents;
-
+	
 	// 选定的范围或插入点
 	private Dispatch selection;
 
@@ -213,7 +209,32 @@ public class MSWordManager {
 	 *            要插入的新字符串
 	 */
 	public void insertText(String newText) {
-		Dispatch.put(selection, "Text", newText);
+//		Dispatch.put(selection, "Text", newText);
+
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // 取得word文件的内容
+		Dispatch.call(wordContent, "InsertAfter", newText);// 插入一个段落到最后
+//		Dispatch paragraphs = Dispatch.get(wordContent, "Paragraphs")
+//				.toDispatch(); // 所有段落
+//		int paragraphCount = Dispatch.get(paragraphs, "Count").changeType(
+//				Variant.VariantInt).getInt();// 一共的段落数
+//		System.out.println(paragraphCount);
+//		// 找到刚输入的段落，设置格式
+//		Dispatch lastParagraph = Dispatch.call(paragraphs, "Item",
+//				new Variant(paragraphCount)).toDispatch(); // 最后一段（也就是刚插入的）
+//		// Range 对象表示文档中的一个连续范围，由一个起始字符位置和一个终止字符位置定义
+//		Dispatch lastParagraphRange = Dispatch.get(lastParagraph, "Range")
+//				.toDispatch();
+		moveEnd();
+
+
+//		Dispatch.call(selection, "TypeParagraph");
+	}
+	
+	
+	public void typeParagraph() {
+		if (selection == null)
+			selection = Dispatch.get(word, "Selection").toDispatch();
+		Dispatch.call(selection, "TypeParagraph");
 	}
 
 	/** */
@@ -359,6 +380,35 @@ public class MSWordManager {
 		}
 	}
 
+
+	public void getParagraphFromAnotherDoc(String anotherDocPath,
+			int paragraphIndex) {
+		
+		ActiveXComponent word2 = new ActiveXComponent("Word.Application");
+		word2.setProperty("Visible", new Variant(false));
+		Dispatch documents2 = word2.getProperty("Documents").toDispatch();;
+		Dispatch doc2 = null;
+		try {
+			doc2 = Dispatch.call(documents2, "Open", anotherDocPath)
+					.toDispatch();
+			Dispatch paragraphs = Dispatch.get(doc2, "Paragraphs").toDispatch();
+			Dispatch paragraph=Dispatch.call(paragraphs, "Item",new Variant(paragraphIndex)).toDispatch();
+			Dispatch paraRange=Dispatch.get(paragraph, "Range").toDispatch();
+			System.out.println(Dispatch.get(paraRange, "Text").toString());
+			System.err.println(Dispatch.get(paragraph, "OutlineLevel").getInt());
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (doc2 != null) {
+				Dispatch.call(doc2, "Close", new Variant(saveOnExit));
+				Dispatch.call(word2, "Quit");
+				doc2 = null;
+				documents2 = null;
+			}
+		}
+	}
+	
 	/** */
 	/**
 	 * 在当前文档末尾拷贝来自另一个文档中的段落
@@ -376,6 +426,7 @@ public class MSWordManager {
 				"$selection$");
 	}
 
+	
 	/** */
 	/**
 	 * 在当前文档指定的位置拷贝来自另一个文档中的段落
@@ -397,6 +448,7 @@ public class MSWordManager {
 
 			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
 					new Variant(paragraphIndex)).toDispatch();
+			Dispatch image = Dispatch.get(paragraph, "Image").toDispatch();
 			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
 			Dispatch.call(range, "Copy");
 			if (this.find(pos)) {
@@ -414,6 +466,14 @@ public class MSWordManager {
 		}
 	}
 
+	public void copyTableFromAnotherDoc(String anotherDocPath,
+			int tableIndex) {
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // 取得当前文档的内容
+		Dispatch.call(wordContent, "InsertAfter", "$selection$");// 插入特殊符定位插入点
+		copyTableFromAnotherDoc(anotherDocPath, tableIndex,
+				"$selection$");
+	}
+	
 	/** */
 	/**
 	 * 在当前文档指定的位置拷贝来自另一个文档中的表格
@@ -451,6 +511,14 @@ public class MSWordManager {
 		}
 	}
 
+	public void copyImageFromAnotherDoc(String anotherDocPath,
+			int shapeIndex) {
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // 取得当前文档的内容
+		Dispatch.call(wordContent, "InsertAfter", "$selection$");// 插入特殊符定位插入点
+		copyImageFromAnotherDoc(anotherDocPath, shapeIndex,
+				"$selection$");
+	}
+	
 	/** */
 	/**
 	 * 在当前文档指定的位置拷贝来自另一个文档中的图片
@@ -488,6 +556,43 @@ public class MSWordManager {
 		}
 	}
 
+	/** */
+	/**
+	 * 将word文件转换为pdf文件
+	 * 
+	 * @param sfileName
+	 *            word文件路径和文件名
+	 * @param toFileName
+	 *            pdf文件路径和文件名
+	 */
+	public void toPdf(String sfileName, String toFileName){  
+	        long start = System.currentTimeMillis();    
+	        try {    
+	            doc = Dispatch.call(documents,  "Open" , sfileName).toDispatch();
+	            System.out.println("打开文档..." + sfileName);
+	            System.out.println("转换文档到PDF..." + toFileName);    
+	            File tofile = new File(toFileName);    
+	            if (tofile.exists()) {    
+	                tofile.delete();    
+	            }    
+	            Dispatch.call(doc,    
+	                          "SaveAs",    
+	                          toFileName, // FileName    
+	                          17);    
+	            long end = System.currentTimeMillis();    
+	            System.out.println("转换完成..用时：" + (end - start) + "ms.");
+	            
+	              
+	        } catch (Exception e) {    
+	            System.out.println("========Error:文档转换失败：" + e.getMessage());    
+	        } finally {
+	        	Dispatch.call(doc,"Close",false);
+	            if (word != null)    
+	            	word.invoke("Quit", new Variant[] {});    
+	            }
+	          //如果没有这句话,winword.exe进程将不会关闭
+	           ComThread.Release(); 
+	}
 	/** */
 	/**
 	 * 创建表格
@@ -730,6 +835,14 @@ public class MSWordManager {
 		Dispatch.put(font, "Size", size);
 	}
 
+	
+	public void setTitleStyle(String style){
+		Dispatch activeDocument  = Dispatch.get(word, "ActiveDocument").toDispatch();
+		Dispatch titleStyle = Dispatch.call(activeDocument, "Styles", style).toDispatch();
+		Dispatch.put(selection, "Style", titleStyle);
+		setFont(false, false, false, "0,0,0,0", "14", "宋体");
+		
+	}
 	/** */
 	/**
 	 * 文件保存或另存为
@@ -737,10 +850,14 @@ public class MSWordManager {
 	 * @param savePath
 	 *            保存或另存为路径
 	 */
-	public void save(String savePath) {
+	public void savePath(String savePath) {
 		Dispatch.call(
 				(Dispatch) Dispatch.call(word, "WordBasic").getDispatch(),
 				"FileSaveAs", savePath);
+	}
+	
+	public void save() {
+		Dispatch.call(doc, "Save");
 	}
 
 	/** */

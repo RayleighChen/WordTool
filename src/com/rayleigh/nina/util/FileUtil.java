@@ -1,4 +1,4 @@
-package com.rayleigh.nina.controller;
+package com.rayleigh.nina.util;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class FileTool {
+public class FileUtil {
 
 	private static void copy(String source, String target) {
 		try {
