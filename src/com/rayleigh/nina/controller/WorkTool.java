@@ -27,7 +27,7 @@ public class WorkTool {
 		int numOfParagraphs = wdUtil.getNumOfParagraphs();
 		int i = 0;
 		wdUtil.openDocument("D:\\文件模板.doc");
-		wdUtil.replaceText("单个文件模板", "模具工作零件的计算及初绘总装配图");
+		wdUtil.replaceText("单个文件模板", "导正销带料的导正定位");
 		wdUtil.moveDown(1);
 		int picIndex = 0;
 		int tableIndex = 0;
