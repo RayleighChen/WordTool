@@ -14,7 +14,7 @@ public class ConsoleTextArea extends JTextArea {
 				return consoleTextArea = new ConsoleTextArea();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				System.err.println("ä¸èƒ½åˆ›å»ºLoopedStreamsï¼š" + e);
+				System.err.println("²»ÄÜ´´½¨LoopedStreams£º" + e);
 				System.exit(1);
 			}
 		}
@@ -28,7 +28,7 @@ public class ConsoleTextArea extends JTextArea {
 	private ConsoleTextArea() throws IOException {
 		final LoopedStreams ls = new LoopedStreams();
 
-		// é‡å®šå‘System.outå’ŒSystem.err
+		// ÖØ¶¨ÏòSystem.outºÍSystem.err
 		PrintStream ps = new PrintStream(ls.getOutputStream());
 		System.setOut(ps);
 		System.setErr(ps);
@@ -55,7 +55,7 @@ public class ConsoleTextArea extends JTextArea {
 							setCaretPosition(doc.getLength());
 					}
 				} catch (IOException e) {
-					JOptionPane.showMessageDialog(null, "ä»BufferedReaderè¯»å–é”™è¯¯ï¼š"
+					JOptionPane.showMessageDialog(null, "´ÓBufferedReader¶ÁÈ¡´íÎó£º"
 							+ e);
 					System.exit(1);
 				}

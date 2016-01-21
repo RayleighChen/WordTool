@@ -1,23 +1,27 @@
-package com.rayleigh.nina.demo;
+package com.rayleigh.nina.util;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.omg.PortableInterceptor.DISCARDING;
 
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
-public class MSWordManager {
-	// wordÎÄµµ
+public class WordUtil {
+	// wordæ–‡æ¡£
 	private Dispatch doc;
 
-	// wordÔËĞĞ³ÌĞò¶ÔÏó
+	// wordè¿è¡Œç¨‹åºå¯¹è±¡
 	private ActiveXComponent word;
 
-	// ËùÓĞwordÎÄµµ¼¯ºÏ
+	// æ‰€æœ‰wordæ–‡æ¡£é›†åˆ
 	private Dispatch documents;
 
-	// Ñ¡¶¨µÄ·¶Î§»ò²åÈëµã
+	// é€‰å®šçš„èŒƒå›´æˆ–æ’å…¥ç‚¹
 	private Dispatch selection;
 
 	private boolean saveOnExit = true;
@@ -26,9 +30,10 @@ public class MSWordManager {
 	/**
 	 * 
 	 * @param visible
-	 *            Îªtrue±íÊ¾wordÓ¦ÓÃ³ÌĞò¿É¼û
+	 *            ä¸ºtrueè¡¨ç¤ºwordåº”ç”¨ç¨‹åºå¯è§
 	 */
-	public MSWordManager(boolean visible) {
+	public WordUtil(boolean visible) {
+		
 		if (word == null) {//|| word.m_pDispatch==0
 			word = new ActiveXComponent("Word.Application");
 			word.setProperty("Visible", new Variant(visible));
@@ -39,10 +44,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÉèÖÃÍË³öÊ±²ÎÊı
+	 * è®¾ç½®é€€å‡ºæ—¶å‚æ•°
 	 * 
 	 * @param saveOnExit
-	 *            boolean true-ÍË³öÊ±±£´æÎÄ¼ş£¬false-ÍË³öÊ±²»±£´æÎÄ¼ş
+	 *            boolean true-é€€å‡ºæ—¶ä¿å­˜æ–‡ä»¶ï¼Œfalse-é€€å‡ºæ—¶ä¸ä¿å­˜æ–‡ä»¶
 	 */
 	public void setSaveOnExit(boolean saveOnExit) {
 		this.saveOnExit = saveOnExit;
@@ -50,7 +55,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ´´½¨Ò»¸öĞÂµÄwordÎÄµµ
+	 * åˆ›å»ºä¸€ä¸ªæ–°çš„wordæ–‡æ¡£
 	 * 
 	 */
 	public void createNewDocument() {
@@ -63,9 +68,15 @@ public class MSWordManager {
 		int nums = Dispatch.call(selection, "Information", 4).getInt();		
 		return nums;
 	}
+	
+	public int getNumOfParagraphs(){
+		
+		Dispatch paragraphs = Dispatch.get(doc, "Paragraphs").toDispatch();
+		return Dispatch.get(paragraphs, "Count").getInt();
+	}
 	/** */
 	/**
-	 * ´ò¿ªÒ»¸öÒÑ´æÔÚµÄÎÄµµ
+	 * æ‰“å¼€ä¸€ä¸ªå·²å­˜åœ¨çš„æ–‡æ¡£
 	 * 
 	 * @param docPath
 	 */
@@ -77,10 +88,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * °ÑÑ¡¶¨µÄÄÚÈİ»ò²åÈëµãÏòÉÏÒÆ¶¯
+	 * æŠŠé€‰å®šçš„å†…å®¹æˆ–æ’å…¥ç‚¹å‘ä¸Šç§»åŠ¨
 	 * 
 	 * @param pos
-	 *            ÒÆ¶¯µÄ¾àÀë
+	 *            ç§»åŠ¨çš„è·ç¦»
 	 */
 	public void moveUp(int pos) {
 		if (selection == null)
@@ -92,10 +103,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * °ÑÑ¡¶¨µÄÄÚÈİ»òÕß²åÈëµãÏòÏÂÒÆ¶¯
+	 * æŠŠé€‰å®šçš„å†…å®¹æˆ–è€…æ’å…¥ç‚¹å‘ä¸‹ç§»åŠ¨
 	 * 
 	 * @param pos
-	 *            ÒÆ¶¯µÄ¾àÀë
+	 *            ç§»åŠ¨çš„è·ç¦»
 	 */
 	public void moveDown(int pos) {
 		if (selection == null)
@@ -106,10 +117,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * °ÑÑ¡¶¨µÄÄÚÈİ»òÕß²åÈëµãÏò×óÒÆ¶¯
+	 * æŠŠé€‰å®šçš„å†…å®¹æˆ–è€…æ’å…¥ç‚¹å‘å·¦ç§»åŠ¨
 	 * 
 	 * @param pos
-	 *            ÒÆ¶¯µÄ¾àÀë
+	 *            ç§»åŠ¨çš„è·ç¦»
 	 */
 	public void moveLeft(int pos) {
 		if (selection == null)
@@ -121,10 +132,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * °ÑÑ¡¶¨µÄÄÚÈİ»òÕß²åÈëµãÏòÓÒÒÆ¶¯
+	 * æŠŠé€‰å®šçš„å†…å®¹æˆ–è€…æ’å…¥ç‚¹å‘å³ç§»åŠ¨
 	 * 
 	 * @param pos
-	 *            ÒÆ¶¯µÄ¾àÀë
+	 *            ç§»åŠ¨çš„è·ç¦»
 	 */
 	public void moveRight(int pos) {
 		if (selection == null)
@@ -135,7 +146,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * °Ñ²åÈëµãÒÆ¶¯µ½ÎÄ¼şÊ×Î»ÖÃ
+	 * æŠŠæ’å…¥ç‚¹ç§»åŠ¨åˆ°æ–‡ä»¶é¦–ä½ç½®
 	 * 
 	 */
 	public void moveStart() {
@@ -152,39 +163,39 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ´ÓÑ¡¶¨ÄÚÈİ»ò²åÈëµã¿ªÊ¼²éÕÒÎÄ±¾
+	 * ä»é€‰å®šå†…å®¹æˆ–æ’å…¥ç‚¹å¼€å§‹æŸ¥æ‰¾æ–‡æœ¬
 	 * 
 	 * @param toFindText
-	 *            Òª²éÕÒµÄÎÄ±¾
-	 * @return boolean true-²éÕÒµ½²¢Ñ¡ÖĞ¸ÃÎÄ±¾£¬false-Î´²éÕÒµ½ÎÄ±¾
+	 *            è¦æŸ¥æ‰¾çš„æ–‡æœ¬
+	 * @return boolean true-æŸ¥æ‰¾åˆ°å¹¶é€‰ä¸­è¯¥æ–‡æœ¬ï¼Œfalse-æœªæŸ¥æ‰¾åˆ°æ–‡æœ¬
 	 */
 	public boolean find(String toFindText) {
 		if (toFindText == null || toFindText.equals(""))
 			return false;
-		// ´ÓselectionËùÔÚÎ»ÖÃ¿ªÊ¼²éÑ¯
+		// ä»selectionæ‰€åœ¨ä½ç½®å¼€å§‹æŸ¥è¯¢
 		Dispatch find = word.call(selection, "Find").toDispatch();
-		// ÉèÖÃÒª²éÕÒµÄÄÚÈİ
+		// è®¾ç½®è¦æŸ¥æ‰¾çš„å†…å®¹
 		Dispatch.put(find, "Text", toFindText);
-		// ÏòÇ°²éÕÒ
+		// å‘å‰æŸ¥æ‰¾
 		Dispatch.put(find, "Forward", "True");
-		// ÉèÖÃ¸ñÊ½
+		// è®¾ç½®æ ¼å¼
 		Dispatch.put(find, "Format", "True");
-		// ´óĞ¡Ğ´Æ¥Åä
+		// å¤§å°å†™åŒ¹é…
 		Dispatch.put(find, "MatchCase", "True");
-		// È«×ÖÆ¥Åä
+		// å…¨å­—åŒ¹é…
 		Dispatch.put(find, "MatchWholeWord", "True");
-		// ²éÕÒ²¢Ñ¡ÖĞ
+		// æŸ¥æ‰¾å¹¶é€‰ä¸­
 		return Dispatch.call(find, "Execute").getBoolean();
 	}
 
 	/** */
 	/**
-	 * °ÑÑ¡¶¨Ñ¡¶¨ÄÚÈİÉè¶¨ÎªÌæ»»ÎÄ±¾
+	 * æŠŠé€‰å®šé€‰å®šå†…å®¹è®¾å®šä¸ºæ›¿æ¢æ–‡æœ¬
 	 * 
 	 * @param toFindText
-	 *            ²éÕÒ×Ö·û´®
+	 *            æŸ¥æ‰¾å­—ç¬¦ä¸²
 	 * @param newText
-	 *            ÒªÌæ»»µÄÄÚÈİ
+	 *            è¦æ›¿æ¢çš„å†…å®¹
 	 * @return
 	 */
 	public boolean replaceText(String toFindText, String newText) {
@@ -196,12 +207,12 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * È«¾ÖÌæ»»ÎÄ±¾
+	 * å…¨å±€æ›¿æ¢æ–‡æœ¬
 	 * 
 	 * @param toFindText
-	 *            ²éÕÒ×Ö·û´®
+	 *            æŸ¥æ‰¾å­—ç¬¦ä¸²
 	 * @param newText
-	 *            ÒªÌæ»»µÄÄÚÈİ
+	 *            è¦æ›¿æ¢çš„å†…å®¹
 	 */
 	public void replaceAllText(String toFindText, String newText) {
 		while (find(toFindText)) {
@@ -212,28 +223,27 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°²åÈëµã²åÈë×Ö·û´®
+	 * åœ¨å½“å‰æ’å…¥ç‚¹æ’å…¥å­—ç¬¦ä¸²
 	 * 
 	 * @param newText
-	 *            Òª²åÈëµÄĞÂ×Ö·û´®
+	 *            è¦æ’å…¥çš„æ–°å­—ç¬¦ä¸²
 	 */
 	public void insertText(String newText) {
 		// Dispatch.put(selection, "Text", newText);
 
-		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // È¡µÃwordÎÄ¼şµÄÄÚÈİ
-		Dispatch.call(wordContent, "InsertAfter", newText);// ²åÈëÒ»¸ö¶ÎÂäµ½×îºó
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // å–å¾—wordæ–‡ä»¶çš„å†…å®¹
+		Dispatch.call(wordContent, "InsertAfter", newText);// æ’å…¥ä¸€ä¸ªæ®µè½åˆ°æœ€å
 		// Dispatch paragraphs = Dispatch.get(wordContent, "Paragraphs")
-		// .toDispatch(); // ËùÓĞ¶ÎÂä
+		// .toDispatch(); // æ‰€æœ‰æ®µè½
 		// int paragraphCount = Dispatch.get(paragraphs, "Count").changeType(
-		// Variant.VariantInt).getInt();// Ò»¹²µÄ¶ÎÂäÊı
+		// Variant.VariantInt).getInt();// ä¸€å…±çš„æ®µè½æ•°
 		// System.out.println(paragraphCount);
-		// // ÕÒµ½¸ÕÊäÈëµÄ¶ÎÂä£¬ÉèÖÃ¸ñÊ½
+		// // æ‰¾åˆ°åˆšè¾“å…¥çš„æ®µè½ï¼Œè®¾ç½®æ ¼å¼
 		// Dispatch lastParagraph = Dispatch.call(paragraphs, "Item",
-		// new Variant(paragraphCount)).toDispatch(); // ×îºóÒ»¶Î£¨Ò²¾ÍÊÇ¸Õ²åÈëµÄ£©
-		// // Range ¶ÔÏó±íÊ¾ÎÄµµÖĞµÄÒ»¸öÁ¬Ğø·¶Î§£¬ÓÉÒ»¸öÆğÊ¼×Ö·ûÎ»ÖÃºÍÒ»¸öÖÕÖ¹×Ö·ûÎ»ÖÃ¶¨Òå
+		// new Variant(paragraphCount)).toDispatch(); // æœ€åä¸€æ®µï¼ˆä¹Ÿå°±æ˜¯åˆšæ’å…¥çš„ï¼‰
+		// // Range å¯¹è±¡è¡¨ç¤ºæ–‡æ¡£ä¸­çš„ä¸€ä¸ªè¿ç»­èŒƒå›´ï¼Œç”±ä¸€ä¸ªèµ·å§‹å­—ç¬¦ä½ç½®å’Œä¸€ä¸ªç»ˆæ­¢å­—ç¬¦ä½ç½®å®šä¹‰
 		// Dispatch lastParagraphRange = Dispatch.get(lastParagraph, "Range")
 		// .toDispatch();
-		moveEnd();
 
 		// Dispatch.call(selection, "TypeParagraph");
 	}
@@ -248,9 +258,9 @@ public class MSWordManager {
 	/**
 	 * 
 	 * @param toFindText
-	 *            Òª²éÕÒµÄ×Ö·û´®
+	 *            è¦æŸ¥æ‰¾çš„å­—ç¬¦ä¸²
 	 * @param imagePath
-	 *            Í¼Æ¬Â·¾¶
+	 *            å›¾ç‰‡è·¯å¾„
 	 * @return
 	 */
 	public boolean replaceImage(String toFindText, String imagePath) {
@@ -263,12 +273,12 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * È«¾ÖÌæ»»Í¼Æ¬
+	 * å…¨å±€æ›¿æ¢å›¾ç‰‡
 	 * 
 	 * @param toFindText
-	 *            ²éÕÒ×Ö·û´®
+	 *            æŸ¥æ‰¾å­—ç¬¦ä¸²
 	 * @param imagePath
-	 *            Í¼Æ¬Â·¾¶
+	 *            å›¾ç‰‡è·¯å¾„
 	 */
 	public void replaceAllImage(String toFindText, String imagePath) {
 		while (find(toFindText)) {
@@ -280,10 +290,10 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°²åÈëµã²åÈëÍ¼Æ¬
+	 * åœ¨å½“å‰æ’å…¥ç‚¹æ’å…¥å›¾ç‰‡
 	 * 
 	 * @param imagePath
-	 *            Í¼Æ¬Â·¾¶
+	 *            å›¾ç‰‡è·¯å¾„
 	 */
 	public void insertImage(String imagePath) {
 		Dispatch.call(Dispatch.get(selection, "InLineShapes").toDispatch(),
@@ -292,7 +302,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ºÏ²¢µ¥Ôª¸ñ
+	 * åˆå¹¶å•å…ƒæ ¼
 	 * 
 	 * @param tableIndex
 	 * @param fstCellRowIdx
@@ -302,9 +312,9 @@ public class MSWordManager {
 	 */
 	public void mergeCell(int tableIndex, int fstCellRowIdx, int fstCellColIdx,
 			int secCellRowIdx, int secCellColIdx) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
 		Dispatch fstCell = Dispatch.call(table, "Cell",
@@ -318,7 +328,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚÖ¸¶¨µÄµ¥Ôª¸ñÀïÌîĞ´Êı¾İ
+	 * åœ¨æŒ‡å®šçš„å•å…ƒæ ¼é‡Œå¡«å†™æ•°æ®
 	 * 
 	 * @param tableIndex
 	 * @param cellRowIdx
@@ -327,9 +337,9 @@ public class MSWordManager {
 	 */
 	public void putTxtToCell(int tableIndex, int cellRowIdx, int cellColIdx,
 			String txt) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
 		Dispatch cell = Dispatch.call(table, "Cell", new Variant(cellRowIdx),
@@ -340,7 +350,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµ¿½±´Êı¾İ
+	 * åœ¨å½“å‰æ–‡æ¡£æ‹·è´æ•°æ®
 	 * 
 	 * @param pos
 	 */
@@ -354,7 +364,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÕ³Ìû¼ôÌù°åÊı¾İ
+	 * åœ¨å½“å‰æ–‡æ¡£ç²˜å¸–å‰ªè´´æ¿æ•°æ®
 	 * 
 	 * @param pos
 	 */
@@ -368,12 +378,12 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ¿½±´±í¸ñ
+	 * åœ¨å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®æ‹·è´è¡¨æ ¼
 	 * 
 	 * @param pos
-	 *            µ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ
+	 *            å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®
 	 * @param tableIndex
-	 *            ±»¿½±´µÄ±í¸ñÔÚwordÎÄµµÖĞËù´¦µÄÎ»ÖÃ
+	 *            è¢«æ‹·è´çš„è¡¨æ ¼åœ¨wordæ–‡æ¡£ä¸­æ‰€å¤„çš„ä½ç½®
 	 */
 	public void copyTable(String pos, int tableIndex) {
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
@@ -402,8 +412,8 @@ public class MSWordManager {
 			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
 					new Variant(paragraphIndex)).toDispatch();
 			Dispatch paraRange = Dispatch.get(paragraph, "Range").toDispatch();
-			System.err
-					.println(Dispatch.get(paragraph, "OutlineLevel").getInt());
+//			System.err
+//					.println(Dispatch.get(paragraph, "OutlineLevel").getInt());
 			return Dispatch.get(paraRange, "Text").toString();
 
 		} catch (Exception e) {
@@ -421,31 +431,31 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÄ©Î²¿½±´À´×ÔÁíÒ»¸öÎÄµµÖĞµÄ¶ÎÂä
+	 * åœ¨å½“å‰æ–‡æ¡£æœ«å°¾æ‹·è´æ¥è‡ªå¦ä¸€ä¸ªæ–‡æ¡£ä¸­çš„æ®µè½
 	 * 
 	 * @param anotherDocPath
-	 *            ÁíÒ»¸öÎÄµµµÄ´ÅÅÌÂ·¾¶
+	 *            å¦ä¸€ä¸ªæ–‡æ¡£çš„ç£ç›˜è·¯å¾„
 	 * @param tableIndex
-	 *            ±»¿½±´µÄ¶ÎÂäÔÚÁíÒ»¸ñÎÄµµÖĞµÄĞòºÅ(´Ó1¿ªÊ¼)
+	 *            è¢«æ‹·è´çš„æ®µè½åœ¨å¦ä¸€æ ¼æ–‡æ¡£ä¸­çš„åºå·(ä»1å¼€å§‹)
 	 */
 	public void copyParagraphFromAnotherDoc(String anotherDocPath,
 			int paragraphIndex) {
-		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // È¡µÃµ±Ç°ÎÄµµµÄÄÚÈİ
-		Dispatch.call(wordContent, "InsertAfter", "$selection$");// ²åÈëÌØÊâ·û¶¨Î»²åÈëµã
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // å–å¾—å½“å‰æ–‡æ¡£çš„å†…å®¹
+		Dispatch.call(wordContent, "InsertAfter", "$selection$");// æ’å…¥ç‰¹æ®Šç¬¦å®šä½æ’å…¥ç‚¹
 		copyParagraphFromAnotherDoc(anotherDocPath, paragraphIndex,
 				"$selection$");
 	}
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ¿½±´À´×ÔÁíÒ»¸öÎÄµµÖĞµÄ¶ÎÂä
+	 * åœ¨å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®æ‹·è´æ¥è‡ªå¦ä¸€ä¸ªæ–‡æ¡£ä¸­çš„æ®µè½
 	 * 
 	 * @param anotherDocPath
-	 *            ÁíÒ»¸öÎÄµµµÄ´ÅÅÌÂ·¾¶
+	 *            å¦ä¸€ä¸ªæ–‡æ¡£çš„ç£ç›˜è·¯å¾„
 	 * @param tableIndex
-	 *            ±»¿½±´µÄ¶ÎÂäÔÚÁíÒ»¸ñÎÄµµÖĞµÄĞòºÅ(´Ó1¿ªÊ¼)
+	 *            è¢«æ‹·è´çš„æ®µè½åœ¨å¦ä¸€æ ¼æ–‡æ¡£ä¸­çš„åºå·(ä»1å¼€å§‹)
 	 * @param pos
-	 *            µ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ
+	 *            å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®
 	 */
 	public void copyParagraphFromAnotherDoc(String anotherDocPath,
 			int paragraphIndex, String pos) {
@@ -475,21 +485,21 @@ public class MSWordManager {
 	}
 
 	public void copyTableFromAnotherDoc(String anotherDocPath, int tableIndex) {
-		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // È¡µÃµ±Ç°ÎÄµµµÄÄÚÈİ
-		Dispatch.call(wordContent, "InsertAfter", "$selection$");// ²åÈëÌØÊâ·û¶¨Î»²åÈëµã
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // å–å¾—å½“å‰æ–‡æ¡£çš„å†…å®¹
+		Dispatch.call(wordContent, "InsertAfter", "$selection$");// æ’å…¥ç‰¹æ®Šç¬¦å®šä½æ’å…¥ç‚¹
 		copyTableFromAnotherDoc(anotherDocPath, tableIndex, "$selection$");
 	}
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ¿½±´À´×ÔÁíÒ»¸öÎÄµµÖĞµÄ±í¸ñ
+	 * åœ¨å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®æ‹·è´æ¥è‡ªå¦ä¸€ä¸ªæ–‡æ¡£ä¸­çš„è¡¨æ ¼
 	 * 
 	 * @param anotherDocPath
-	 *            ÁíÒ»¸öÎÄµµµÄ´ÅÅÌÂ·¾¶
+	 *            å¦ä¸€ä¸ªæ–‡æ¡£çš„ç£ç›˜è·¯å¾„
 	 * @param tableIndex
-	 *            ±»¿½±´µÄ±í¸ñÔÚÁíÒ»¸ñÎÄµµÖĞµÄĞòºÅ(´Ó1¿ªÊ¼)
+	 *            è¢«æ‹·è´çš„è¡¨æ ¼åœ¨å¦ä¸€æ ¼æ–‡æ¡£ä¸­çš„åºå·(ä»1å¼€å§‹)
 	 * @param pos
-	 *            µ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ
+	 *            å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®
 	 */
 	public void copyTableFromAnotherDoc(String anotherDocPath, int tableIndex,
 			String pos) {
@@ -524,26 +534,26 @@ public class MSWordManager {
                 Dispatch table = Dispatch.call(tables, "Item", new Variant(i + 1)) 
                                 .toDispatch(); 
         		Dispatch.call(table, "Select");
-        		setFont(false, false, false, "0,0,0,0", "10.5", "ËÎÌå");
+        		setFont(false, false, false, "0,0,0,0", "10.5", "å®‹ä½“", "3");
         } 
 	}
 
 	public void copyImageFromAnotherDoc(String anotherDocPath, int shapeIndex) {
-		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // È¡µÃµ±Ç°ÎÄµµµÄÄÚÈİ
-		Dispatch.call(wordContent, "InsertAfter", "$selection$");// ²åÈëÌØÊâ·û¶¨Î»²åÈëµã
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // å–å¾—å½“å‰æ–‡æ¡£çš„å†…å®¹
+		Dispatch.call(wordContent, "InsertAfter", "$selection$");// æ’å…¥ç‰¹æ®Šç¬¦å®šä½æ’å…¥ç‚¹
 		copyImageFromAnotherDoc(anotherDocPath, shapeIndex, "$selection$");
 	}
 
 	/** */
 	/**
-	 * ÔÚµ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ¿½±´À´×ÔÁíÒ»¸öÎÄµµÖĞµÄÍ¼Æ¬
+	 * åœ¨å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®æ‹·è´æ¥è‡ªå¦ä¸€ä¸ªæ–‡æ¡£ä¸­çš„å›¾ç‰‡
 	 * 
 	 * @param anotherDocPath
-	 *            ÁíÒ»¸öÎÄµµµÄ´ÅÅÌÂ·¾¶
+	 *            å¦ä¸€ä¸ªæ–‡æ¡£çš„ç£ç›˜è·¯å¾„
 	 * @param shapeIndex
-	 *            ±»¿½±´µÄÍ¼Æ¬ÔÚÁíÒ»¸ñÎÄµµÖĞµÄÎ»ÖÃ
+	 *            è¢«æ‹·è´çš„å›¾ç‰‡åœ¨å¦ä¸€æ ¼æ–‡æ¡£ä¸­çš„ä½ç½®
 	 * @param pos
-	 *            µ±Ç°ÎÄµµÖ¸¶¨µÄÎ»ÖÃ
+	 *            å½“å‰æ–‡æ¡£æŒ‡å®šçš„ä½ç½®
 	 */
 	public void copyImageFromAnotherDoc(String anotherDocPath, int shapeIndex,
 			String pos) {
@@ -573,19 +583,19 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ½«wordÎÄ¼ş×ª»»ÎªpdfÎÄ¼ş
+	 * å°†wordæ–‡ä»¶è½¬æ¢ä¸ºpdfæ–‡ä»¶
 	 * 
 	 * @param sfileName
-	 *            wordÎÄ¼şÂ·¾¶ºÍÎÄ¼şÃû
+	 *            wordæ–‡ä»¶è·¯å¾„å’Œæ–‡ä»¶å
 	 * @param toFileName
-	 *            pdfÎÄ¼şÂ·¾¶ºÍÎÄ¼şÃû
+	 *            pdfæ–‡ä»¶è·¯å¾„å’Œæ–‡ä»¶å
 	 */
 	public void toPdf(String sfileName, String toFileName) {
 		long start = System.currentTimeMillis();
 		Dispatch doc2 = null;
 		try {
 			doc2 = Dispatch.call(documents, "Open", sfileName).toDispatch();
-			System.out.println("×ª»»ÎÄµµµ½PDF.." + toFileName);
+			System.out.println("è½¬æ¢æ–‡æ¡£åˆ°PDF.." + toFileName);
 			File tofile = new File(toFileName);
 			if (tofile.exists()) {
 				tofile.delete();
@@ -593,12 +603,12 @@ public class MSWordManager {
 			Dispatch.call(doc2, "SaveAs", toFileName, // FileName
 					17);
 			long end = System.currentTimeMillis();
-			System.out.println("×ª»»Íê³É..ÓÃÊ±£º" + (end - start) + "ms.");
+			System.out.println("è½¬æ¢å®Œæˆ..ç”¨æ—¶ï¼š" + (end - start) + "ms.");
 
 		} catch (Exception e) {
-			System.out.println("========Error:ÎÄµµ×ª»»Ê§°Ü£º" + e.getMessage());
+			System.out.println("========Error:æ–‡æ¡£è½¬æ¢å¤±è´¥ï¼š" + e.getMessage());
 		} 
-		// Èç¹ûÃ»ÓĞÕâ¾ä»°,winword.exe½ø³Ì½«²»»á¹Ø±Õ
+		// å¦‚æœæ²¡æœ‰è¿™å¥è¯,winword.exeè¿›ç¨‹å°†ä¸ä¼šå…³é—­
 		
 		 finally {
 			if (doc2 != null) {
@@ -611,14 +621,14 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ´´½¨±í¸ñ
+	 * åˆ›å»ºè¡¨æ ¼
 	 * 
 	 * @param pos
-	 *            Î»ÖÃ
+	 *            ä½ç½®
 	 * @param cols
-	 *            ÁĞÊı
+	 *            åˆ—æ•°
 	 * @param rows
-	 *            ĞĞÊı
+	 *            è¡Œæ•°
 	 */
 	public void createTable(int numCols, int numRows) {// (String pos, int
 														// numCols, int numRows)
@@ -635,20 +645,20 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚÖ¸¶¨ĞĞÇ°ÃæÔö¼ÓĞĞ
+	 * åœ¨æŒ‡å®šè¡Œå‰é¢å¢åŠ è¡Œ
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄ¼şÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡ä»¶ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 * @param rowIndex
-	 *            Ö¸¶¨ĞĞµÄĞòºÅ(´Ó1¿ªÊ¼)
+	 *            æŒ‡å®šè¡Œçš„åºå·(ä»1å¼€å§‹)
 	 */
 	public void addTableRow(int tableIndex, int rowIndex) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch rows = Dispatch.get(table, "Rows").toDispatch();
 		Dispatch row = Dispatch.call(rows, "Item", new Variant(rowIndex))
 				.toDispatch();
@@ -657,18 +667,18 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµÚ1ĞĞÇ°Ôö¼ÓÒ»ĞĞ
+	 * åœ¨ç¬¬1è¡Œå‰å¢åŠ ä¸€è¡Œ
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addFirstTableRow(int tableIndex) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch rows = Dispatch.get(table, "Rows").toDispatch();
 		Dispatch row = Dispatch.get(rows, "First").toDispatch();
 		Dispatch.call(rows, "Add", new Variant(row));
@@ -676,18 +686,18 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚ×îºó1ĞĞÇ°Ôö¼ÓÒ»ĞĞ
+	 * åœ¨æœ€å1è¡Œå‰å¢åŠ ä¸€è¡Œ
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addLastTableRow(int tableIndex) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch rows = Dispatch.get(table, "Rows").toDispatch();
 		Dispatch row = Dispatch.get(rows, "Last").toDispatch();
 		Dispatch.call(rows, "Add", new Variant(row));
@@ -695,35 +705,35 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * Ôö¼ÓÒ»ĞĞ
+	 * å¢åŠ ä¸€è¡Œ
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addRow(int tableIndex) {
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch rows = Dispatch.get(table, "Rows").toDispatch();
 		Dispatch.call(rows, "Add");
 	}
 
 	/** */
 	/**
-	 * Ôö¼ÓÒ»ÁĞ
+	 * å¢åŠ ä¸€åˆ—
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addCol(int tableIndex) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch cols = Dispatch.get(table, "Columns").toDispatch();
 		Dispatch.call(cols, "Add").toDispatch();
 		Dispatch.call(cols, "AutoFit");
@@ -731,20 +741,20 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚÖ¸¶¨ÁĞÇ°ÃæÔö¼Ó±í¸ñµÄÁĞ
+	 * åœ¨æŒ‡å®šåˆ—å‰é¢å¢åŠ è¡¨æ ¼çš„åˆ—
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 * @param colIndex
-	 *            Ö¸¶¨ÁĞµÄĞòºÅ (´Ó1¿ªÊ¼)
+	 *            æŒ‡å®šåˆ—çš„åºå· (ä»1å¼€å§‹)
 	 */
 	public void addTableCol(int tableIndex, int colIndex) {
-		// ËùÓĞ±í¸ñ
+		// æ‰€æœ‰è¡¨æ ¼
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch cols = Dispatch.get(table, "Columns").toDispatch();
 		System.out.println(Dispatch.get(cols, "Count"));
 		Dispatch col = Dispatch.call(cols, "Item", new Variant(colIndex))
@@ -756,17 +766,17 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚµÚ1ÁĞÇ°Ôö¼ÓÒ»ÁĞ
+	 * åœ¨ç¬¬1åˆ—å‰å¢åŠ ä¸€åˆ—
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addFirstTableCol(int tableIndex) {
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch cols = Dispatch.get(table, "Columns").toDispatch();
 		Dispatch col = Dispatch.get(cols, "First").toDispatch();
 		Dispatch.call(cols, "Add", col).toDispatch();
@@ -775,17 +785,17 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÔÚ×îºóÒ»ÁĞÇ°Ôö¼ÓÒ»ÁĞ
+	 * åœ¨æœ€åä¸€åˆ—å‰å¢åŠ ä¸€åˆ—
 	 * 
 	 * @param tableIndex
-	 *            wordÎÄµµÖĞµÄµÚNÕÅ±í(´Ó1¿ªÊ¼)
+	 *            wordæ–‡æ¡£ä¸­çš„ç¬¬Nå¼ è¡¨(ä»1å¼€å§‹)
 	 */
 	public void addLastTableCol(int tableIndex) {
 		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-		// ÒªÌî³äµÄ±í¸ñ
+		// è¦å¡«å……çš„è¡¨æ ¼
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
-		// ±í¸ñµÄËùÓĞĞĞ
+		// è¡¨æ ¼çš„æ‰€æœ‰è¡Œ
 		Dispatch cols = Dispatch.get(table, "Columns").toDispatch();
 		Dispatch col = Dispatch.get(cols, "Last").toDispatch();
 		Dispatch.call(cols, "Add", col).toDispatch();
@@ -794,7 +804,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ×Ô¶¯µ÷Õû±í¸ñ
+	 * è‡ªåŠ¨è°ƒæ•´è¡¨æ ¼
 	 * 
 	 */
 	public void autoFitTable() {
@@ -810,7 +820,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * µ÷ÓÃwordÀïµÄºêÒÔµ÷Õû±í¸ñµÄ¿í¶È,ÆäÖĞºê±£´æÔÚdocumentÏÂ
+	 * è°ƒç”¨wordé‡Œçš„å®ä»¥è°ƒæ•´è¡¨æ ¼çš„å®½åº¦,å…¶ä¸­å®ä¿å­˜åœ¨documentä¸‹
 	 * 
 	 */
 	public void callWordMacro() {
@@ -829,21 +839,23 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ÉèÖÃµ±Ç°Ñ¡¶¨ÄÚÈİµÄ×ÖÌå
+	 * è®¾ç½®å½“å‰é€‰å®šå†…å®¹çš„å­—ä½“
 	 * 
 	 * @param boldSize
 	 * @param italicSize
 	 * @param underLineSize
-	 *            ÏÂ»®Ïß
+	 *            ä¸‹åˆ’çº¿
 	 * @param colorSize
-	 *            ×ÖÌåÑÕÉ«
+	 *            å­—ä½“é¢œè‰²
 	 * @param size
-	 *            ×ÖÌå´óĞ¡
+	 *            å­—ä½“å¤§å°
 	 * @param name
-	 *            ×ÖÌåÃû³Æ
+	 *            å­—ä½“åç§°
+	 * @param alignment
+	 *            (1:ç½®ä¸­ 2:é å³ 3:é å·¦)
 	 */
 	public void setFont(boolean bold, boolean italic, boolean underLine,
-			String colorSize, String size, String name) {
+			String colorSize, String size, String name, String alignment) {
 		Dispatch font = Dispatch.get(selection, "Font").toDispatch();
 		Dispatch.put(font, "Name", new Variant(name));
 		Dispatch.put(font, "Bold", new Variant(bold));
@@ -851,6 +863,25 @@ public class MSWordManager {
 		Dispatch.put(font, "Underline", new Variant(underLine));
 		Dispatch.put(font, "Color", colorSize);
 		Dispatch.put(font, "Size", size);
+		
+		Dispatch netAlignment = Dispatch.get(selection, "ParagraphFormat")
+				.toDispatch();// æ®µè½æ ¼å¼
+		Dispatch.put(netAlignment, "Alignment", alignment); // 
+	}
+	
+	public void setPicTitle(){
+		Dispatch alignment = Dispatch.get(selection, "ParagraphFormat")
+				.toDispatch();// æ®µè½æ ¼å¼
+		Dispatch.put(alignment, "Alignment", "1"); // (1:ç½®ä¸­ 2:é å³ 3:é å·¦)
+		Dispatch font = Dispatch.get(selection, "Font").toDispatch();
+		Dispatch.put(font, "Name", new Variant("å®‹ä½“"));
+		Dispatch.put(font, "Size", "10.5");
+		
+		typeParagraph();
+		Dispatch netAlignment = Dispatch.get(selection, "ParagraphFormat")
+				.toDispatch();// æ®µè½æ ¼å¼
+		Dispatch.put(netAlignment, "Alignment", "3"); // (1:ç½®ä¸­ 2:é å³ 3:é å·¦)
+		
 	}
 
 	public void setTitleStyle(String style) {
@@ -859,16 +890,16 @@ public class MSWordManager {
 		Dispatch titleStyle = Dispatch.call(activeDocument, "Styles", style)
 				.toDispatch();
 		Dispatch.put(selection, "Style", titleStyle);
-		setFont(false, false, false, "0,0,0,0", "14", "ËÎÌå");
+		setFont(false, false, false, "0,0,0,0", "14", "å®‹ä½“", "3");
 
 	}
 
 	/** */
 	/**
-	 * ÎÄ¼ş±£´æ»òÁí´æÎª
+	 * æ–‡ä»¶ä¿å­˜æˆ–å¦å­˜ä¸º
 	 * 
 	 * @param savePath
-	 *            ±£´æ»òÁí´æÎªÂ·¾¶
+	 *            ä¿å­˜æˆ–å¦å­˜ä¸ºè·¯å¾„
 	 */
 	public void savePath(String savePath) {
 		Dispatch.call(
@@ -882,7 +913,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ¹Ø±Õµ±Ç°wordÎÄµµ
+	 * å…³é—­å½“å‰wordæ–‡æ¡£
 	 * 
 	 */
 	public void closeDocument() {
@@ -895,7 +926,7 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ¹Ø±ÕÈ«²¿Ó¦ÓÃ
+	 * å…³é—­å…¨éƒ¨åº”ç”¨
 	 * 
 	 */
 	public void close() {
@@ -910,12 +941,144 @@ public class MSWordManager {
 
 	/** */
 	/**
-	 * ´òÓ¡µ±Ç°wordÎÄµµ
+	 * æ‰“å°å½“å‰wordæ–‡æ¡£
 	 * 
 	 */
 	public void printFile() {
 		if (doc != null) {
 			Dispatch.call(doc, "PrintOut");
+		}
+	}
+	
+	public void fitFirstDoc() {
+		Dispatch activeDocument = Dispatch.get(word, "ActiveDocument")
+				.toDispatch();	
+		Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+
+		moveStart();
+		for(int i = 0; i < Dispatch.call(activeDocument, "ComputeStatistics", 5).getInt() + 20;i++) {
+			
+			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
+					new Variant(1)).toDispatch();
+			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
+			Dispatch font = Dispatch.get(range, "Font").toDispatch();
+			Dispatch.put(font, "Name", new Variant("å®‹ä½“"));
+			Dispatch.put(font, "Color", "0,0,0,0");
+			Dispatch.put(font, "Size", "12");
+			moveRight(1);
+		}
+		save();
+		moveStart();
+		replaceAllText("Â­", "");
+		moveStart();
+		replaceAllText("ã€€", " ");
+		moveStart();
+	}
+	
+	public void fitContent() {
+		// TODO Auto-generated method stub
+		moveStart();
+		Dispatch paragraphs = Dispatch.get(doc, "Paragraphs").toDispatch();
+		Dispatch.put(paragraphs, "LineSpacingRule", 4);
+		Dispatch.put(paragraphs, "LineSpacing", 22);
+		
+	}
+	
+	public void fitTitle() {
+		// TODO Auto-generated method stub
+		moveStart();
+		Dispatch paragraphs = Dispatch.get(doc, "Paragraphs").toDispatch();
+		Dispatch paragraph = Dispatch.call(paragraphs, "Item",
+				new Variant(1)).toDispatch();
+
+			Dispatch.put(paragraph, "LineSpacingRule", 0);
+
+		
+
+		
+//		Dispatch paraRange = Dispatch.get(paragraph, "Range").toDispatch();
+	}
+	
+	public void fitPic(HashMap<String, String> picFit) {
+		moveStart();
+		Dispatch shapes = Dispatch.get(doc, "InLineShapes").toDispatch();
+
+		int counts = Dispatch.get(shapes, "Count").getInt();
+		for (int i = 0; i < counts; i++) {
+			Dispatch shape = Dispatch.call(shapes, "Item",
+					new Variant(i + 1)).toDispatch();
+			Dispatch.call(shape, "Select");
+			Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+			Dispatch.put(paragraphs, "LineSpacingRule", 0);
+		}
+
+		
+		// TODO Auto-generated method stub
+		for (Map.Entry<String, String> entry : picFit.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			moveStart();
+			if(find(key.trim())){
+				setFont(false, false, false, "0,0,0,0", "10.5", "å®‹ä½“", "1");
+				Dispatch.put(selection, "Text", value.trim());
+				Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+				Dispatch.put(paragraphs, "LineSpacingRule", 0);
+			}
+			moveStart();
+			replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
+		    
+			moveRight(1);
+		}  
+	}
+	
+	public void fitTable(HashMap<String, String> tableFit) {
+		// TODO Auto-generated method stub
+		
+		moveStart();
+		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
+
+		int counts = Dispatch.get(tables, "Count").getInt();
+		for (int i = 0; i < counts; i++) {
+			Dispatch table = Dispatch.call(tables, "Item",
+					new Variant(i + 1)).toDispatch();
+			Dispatch.call(table, "Select");
+			Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+			Dispatch.put(paragraphs, "LineSpacingRule", 0);
+		}
+
+		
+		// TODO Auto-generated method stub
+		for (Map.Entry<String, String> entry : tableFit.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			moveStart();
+			if(find(key.trim())){
+				setFont(false, false, false, "0,0,0,0", "10.5", "é»‘ä½“", "1");
+				Dispatch.put(selection, "Text", value.trim());
+				Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+				Dispatch.put(paragraphs, "LineSpacingRule", 0);
+			}
+			moveStart();
+			replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
+		    
+			moveRight(1);
+		}  
+	}
+
+	public void fitNewTimes() {
+		Dispatch activeDocument = Dispatch.get(word, "ActiveDocument")
+				.toDispatch();	
+		Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+
+		moveStart();
+		for(int i = 0; i < Dispatch.call(activeDocument, "ComputeStatistics", 5).getInt() + 20;i++) {
+			
+			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
+					new Variant(1)).toDispatch();
+			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
+			Dispatch font = Dispatch.get(range, "Font").toDispatch();
+			Dispatch.put(font, "Name", new Variant("Times New Roman"));
+			moveRight(1);
 		}
 	}
 }

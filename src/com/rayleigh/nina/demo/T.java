@@ -9,38 +9,51 @@ public class T {
                  MSWordManager ms=new MSWordManager(true);     
 
 //                 ms.createNewDocument();   
-                 ms.openDocument("D:\\æ–‡ä»¶æ¨¡æ¿.doc");	
-                 ms.replaceText("å•ä¸ªæ–‡ä»¶æ¨¡æ¿", "æ¨¡å…·å·¥ä½œé›¶ä»¶çš„è®¡ç®—åŠåˆç»˜æ€»è£…é…å›¾");
+                 ms.openDocument("D:\\ÎÄ¼şÄ£°å.docx");	
+                 ms.replaceText("µ¥¸öÎÄ¼şÄ£°å", "Ä£¾ß¹¤×÷Áã¼şµÄ¼ÆËã¼°³õ»æ×Ü×°ÅäÍ¼");
                  ms.moveDown(1);
 
-//                 ms.setFont(true, false, false, "0,0,0,0", "12", "å¾®è½¯é›…é»‘");
+//                 ms.setFont(true, false, false, "0,0,0,0", "12", "Î¢ÈíÑÅºÚ");
 //                 ms.insertText("*a");
 //                 ms.typeParagraph();
 //                 
-//                 ms.setFont(true, false, false, "1,0,0,0", "12", "å®‹ä½“");
+//                 ms.setFont(true, false, false, "1,0,0,0", "12", "ËÎÌå");
 //                 ms.insertText("*b");
 //                 ms.typeParagraph();
                  
-//                 ms.setFont(true, false, false, "0,0,0,0", "12", "å¾®è½¯é›…é»‘");
+//                 ms.setFont(true, false, false, "0,0,0,0", "12", "Î¢ÈíÑÅºÚ");
 //                 ms.insertText("*c");
 //                 ms.typeParagraph();
                  
 
 //                ms.getParagraphFromAnotherDoc("D:\\1.docx", 6);
-//                 ms.setTitleStyle("æ ‡é¢˜ 3");
+//                 ms.setTitleStyle("±êÌâ 3");
 //                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 1);
 //                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 2);
-                 ms.copyTableFromAnotherDoc("D:\\1.docx", 1);
-                 ms.moveEnd();
+//                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 37);
+//                 ms.copyTableFromAnotherDoc("D:\\1.docx", 2);//35-2-1=32,  3*8   // 3*11
+//                 ms.moveEnd();
+                 ms.setTableStyle();
+//                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 38);
+//                 String tmp = ms.getParagraphFromAnotherDoc("D:\\1.docx", 36);
+//                 ms.insertText(tmp);
+//                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 104);
+//                 for (int i = 1; i <= 5; i++) {
+//                	 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 105 + i);
+//				}
+//                 for (int i = 1; i <= 5; i++) {
+//                	 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 110 + i);
+//				}
+//                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 48);//102-48 = 54
+//                 ms.copyTableFromAnotherDoc("D:\\1.docx", 3);
+//                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 102); 
 //                 ms.typeParagraph();
-                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 2);
-                 ms.copyParagraphFromAnotherDoc("D:\\1.docx", 3);
-//                 ms.insertText("1ï¼é€‰æ‹©å›¾æ ‡å»ºç«‹ç‚¹");
+//                 ms.insertText("1£®Ñ¡ÔñÍ¼±ê½¨Á¢µã");
 //                 ms.typeParagraph();
 //                 ms.setFont(false, false, false, "0,0,0,0", "12", "Times New Roman");
-//                 ms.insertText("1ï¼‰è¯¥å¼¯æ›²ä»¶å‡¸ã€å‡¹æ¨¡æ¨ªå‘å°ºå¯¸çš„å†³å®šè¯¥å¼¯æ›²ä»¶çš„å°ºå¯¸23æ˜¯æ ‡æ³¨ä¸ºå†…å½¢å°ºå¯¸çš„ï¼Œæ‰€ä»¥åº”ä»¥å‡¸æ¨¡ä¸ºåŸºå‡†ä»¶ï¼Œå…ˆç¡®å®šå‡¸æ¨¡å°ºå¯¸ï¼Œç„¶åå†å†³å®šå‡¹æ¨¡å°ºå¯¸");
+//                 ms.insertText("1£©¸ÃÍäÇú¼şÍ¹¡¢°¼Ä£ºáÏò³ß´çµÄ¾ö¶¨¸ÃÍäÇú¼şµÄ³ß´ç23ÊÇ±ê×¢ÎªÄÚĞÎ³ß´çµÄ£¬ËùÒÔÓ¦ÒÔÍ¹Ä£Îª»ù×¼¼ş£¬ÏÈÈ·¶¨Í¹Ä£³ß´ç£¬È»ºóÔÙ¾ö¶¨°¼Ä£³ß´ç");
 //                 
-//                 ms.setFont(true, false, false, "0,0,0,0", "32", "å¾®è½¯é›…é»‘");
+//                 ms.setFont(true, false, false, "0,0,0,0", "32", "Î¢ÈíÑÅºÚ");
 ////                 ms.savePath("D:\\1.docx");
 //                 ms.save();
                  

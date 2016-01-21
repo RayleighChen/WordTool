@@ -57,7 +57,7 @@ public class XmlUtil {
 		}
 	}
 
-	// è®¾ç½®å¯¹åº”ç´¢å¼•çš„èŠ‚ç‚¹
+	// ÉèÖÃ¶ÔÓ¦Ë÷ÒıµÄ½Úµã
 	public void getIndexOfBean(int index) {
 		NodeList nodeList = xmldoc.getElementsByTagName(xmlBean.getRootNode());
 		HashMap<String, String> resultSet = new HashMap<String, String>();
@@ -84,7 +84,7 @@ public class XmlUtil {
 		}
 	}
 
-	// è·å–æ‰€æœ‰èŠ‚ç‚¹æ•°ï¼Œç”¨äºåç»­éå†èŠ‚ç‚¹
+	// »ñÈ¡ËùÓĞ½ÚµãÊı£¬ÓÃÓÚºóĞø±éÀú½Úµã
 	public int getNumOfNode() {
 		NodeList nodes = selectNodes(xmlBean.getRootNode(), root);
 		if (nodes != null) {
@@ -93,7 +93,7 @@ public class XmlUtil {
 		return -1;
 	}
 
-	// xmlä¸­æ·»åŠ èŠ‚ç‚¹
+	// xmlÖĞÌí¼Ó½Úµã
 	public void addMsg() {
 		theNode = xmldoc.createElement(xmlBean.getRootNode());
 
@@ -112,7 +112,7 @@ public class XmlUtil {
 		saveXml(xmlBean.getFilePath(), xmldoc);
 	}
 
-	// xmlä¸­ä¿®æ”¹èŠ‚ç‚¹
+	// xmlÖĞĞŞ¸Ä½Úµã
 	public void modifyMsg() {
 		theNode = (Element) selectSingleNode(xmlBean.getSelectString(), root);
 		if (theNode != null) {
@@ -130,19 +130,19 @@ public class XmlUtil {
 		saveXml(xmlBean.getFilePath(), xmldoc);
 	}
 
-	// xmlåˆ é™¤èŠ‚ç‚¹
+	// xmlÉ¾³ı½Úµã
 	public void delMsg() {
 		theNode = (Element) selectSingleNode(xmlBean.getSelectString(), root);
-		// èŠ‚ç‚¹å­˜åœ¨
+		// ½Úµã´æÔÚ
 		if (theNode != null) {
 			theNode.getParentNode().removeChild(theNode);
 		}
 		// output(xmldoc);
-		// ä¿å­˜XMLé…ç½®æ–‡ä»¶
+		// ±£´æXMLÅäÖÃÎÄ¼ş
 		saveXml(xmlBean.getFilePath(), xmldoc);
 	}
 
-	// æœç´¢ æ­¤å¤„çš„keyä¸ æ¯ä¸ªXmlBeançš„selectStringä¸€ç›´
+	// ËÑË÷ ´Ë´¦µÄkeyÓë Ã¿¸öXmlBeanµÄselectStringÒ»Ö±
 	public void SehMsg(String key) {
 		for (int i = 0; i < getNumOfNode(); ++i) {
 			getIndexOfBean(i);
@@ -150,11 +150,11 @@ public class XmlUtil {
 				return;
 			}
 		}
-		System.out.println("æ‰¾ä¸åˆ°è¯¥ä¿¡æ¯ï¼Œ");
+		System.out.println("ÕÒ²»µ½¸ÃĞÅÏ¢£¬");
 		return;
 	}
 
-	// æŸ¥æ‰¾èŠ‚ç‚¹ï¼Œå¹¶è¿”å›ç¬¬ä¸€ä¸ªç¬¦åˆæ¡ä»¶èŠ‚ç‚¹
+	// ²éÕÒ½Úµã£¬²¢·µ»ØµÚÒ»¸ö·ûºÏÌõ¼ş½Úµã
 	public static Node selectSingleNode(String express, Object source) {
 		Node result = null;
 		XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -169,7 +169,7 @@ public class XmlUtil {
 		return result;
 	}
 
-	// æŸ¥æ‰¾èŠ‚ç‚¹ï¼Œè¿”å›ç¬¦åˆæ¡ä»¶çš„èŠ‚ç‚¹é›†ã€‚
+	// ²éÕÒ½Úµã£¬·µ»Ø·ûºÏÌõ¼şµÄ½Úµã¼¯¡£
 	public static NodeList selectNodes(String express, Object source) {
 		NodeList result = null;
 		XPathFactory xpathFactory = XPathFactory.newInstance();
@@ -184,7 +184,7 @@ public class XmlUtil {
 		return result;
 	}
 
-	// å°†nodeçš„XMLå­—ç¬¦ä¸²è¾“å‡ºåˆ°æ§åˆ¶å°
+	// ½«nodeµÄXML×Ö·û´®Êä³öµ½¿ØÖÆÌ¨
 	public static void output(Node node) {
 		TransformerFactory transFactory = TransformerFactory.newInstance();
 		try {
@@ -205,7 +205,7 @@ public class XmlUtil {
 		}
 	}
 
-	// å°†Documentè¾“å‡ºåˆ°æ–‡ä»¶
+	// ½«DocumentÊä³öµ½ÎÄ¼ş
 	public static void saveXml(String fileName, Document doc) {
 		TransformerFactory transFactory = TransformerFactory.newInstance();
 		try {

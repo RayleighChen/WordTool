@@ -5,9 +5,9 @@ import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 class WordBean {
-	// ä»£è¡¨ä¸€ä¸ªword ç¨‹åº
+	// ´ú±íÒ»¸öword ³ÌĞò
 	private ActiveXComponent MsWordApp = null;
-	// ä»£è¡¨è¿›è¡Œå¤„ç†çš„word æ–‡æ¡£
+	// ´ú±í½øĞĞ´¦ÀíµÄword ÎÄµµ
 	private Dispatch document = null;
 	public WordBean() {
 		// Open Word if we/'ve not done it already
@@ -15,121 +15,121 @@ class WordBean {
 			MsWordApp = new ActiveXComponent("Word.Application");
 		}
 	}
-	// è®¾ç½®æ˜¯å¦åœ¨å‰å°æ‰“å¼€ word ç¨‹åº ï¼Œ
+	// ÉèÖÃÊÇ·ñÔÚÇ°Ì¨´ò¿ª word ³ÌĞò £¬
 	public void setVisible(boolean visible) {
 		MsWordApp.setProperty("Visible", new Variant(visible));
-		// è¿™ä¸€å¥ä½œç”¨ç›¸åŒ
+		// ÕâÒ»¾ä×÷ÓÃÏàÍ¬
 		// Dispatch.put(MsWordApp, "Visible", new Variant(visible));
 	}
-	// åˆ›å»ºä¸€ä¸ªæ–°æ–‡æ¡£
+	// ´´½¨Ò»¸öĞÂÎÄµµ
 	public void createNewDocument() {
 		// Find the Documents collection object maintained by Word
-		// documentsè¡¨ç¤ºwordçš„æ‰€æœ‰æ–‡æ¡£çª—å£ï¼Œï¼ˆwordæ˜¯å¤šæ–‡æ¡£åº”ç”¨ç¨‹åºï¼‰
+		// documents±íÊ¾wordµÄËùÓĞÎÄµµ´°¿Ú£¬£¨wordÊÇ¶àÎÄµµÓ¦ÓÃ³ÌĞò£©
 		Dispatch documents = Dispatch.get(MsWordApp, "Documents").toDispatch();
 		// Call the Add method of the Documents collection to create
 		// a new document to edit
 		document = Dispatch.call(documents, "Add").toDispatch();
 	}
-	// æ‰“å¼€ä¸€ä¸ªå­˜åœ¨çš„wordæ–‡æ¡£,å¹¶ç”¨document å¼•ç”¨ å¼•ç”¨å®ƒ
+	// ´ò¿ªÒ»¸ö´æÔÚµÄwordÎÄµµ,²¢ÓÃdocument ÒıÓÃ ÒıÓÃËü
 	public void openFile(String wordFilePath) {
 		// Find the Documents collection object maintained by Word
-		// documentsè¡¨ç¤ºwordçš„æ‰€æœ‰æ–‡æ¡£çª—å£ï¼Œï¼ˆwordæ˜¯å¤šæ–‡æ¡£åº”ç”¨ç¨‹åºï¼‰
+		// documents±íÊ¾wordµÄËùÓĞÎÄµµ´°¿Ú£¬£¨wordÊÇ¶àÎÄµµÓ¦ÓÃ³ÌĞò£©
 		Dispatch documents = Dispatch.get(MsWordApp, "Documents").toDispatch();
 		document = Dispatch.call(documents, "Open", wordFilePath,
-				new Variant(true)/* æ˜¯å¦è¿›è¡Œè½¬æ¢ConfirmConversions */,
-				new Variant(false)/* æ˜¯å¦åªè¯» */).toDispatch();
+				new Variant(true)/* ÊÇ·ñ½øĞĞ×ª»»ConfirmConversions */,
+				new Variant(false)/* ÊÇ·ñÖ»¶Á */).toDispatch();
 		// document = Dispatch.invoke(documents, "Open", Dispatch.Method,
 		// new Object[] { wordFilePath, new Variant(true),
 		// new Variant(false)
 		// }, new int[1]).toDispatch();
 	}
-	// å‘ document ä¸­æ’å…¥æ–‡æœ¬å†…å®¹
+	// Ïò document ÖĞ²åÈëÎÄ±¾ÄÚÈİ
 	public void insertText(String textToInsert) {
 		// Get the current selection within Word at the moment.
 		// a new document has just been created then this will be at
-		// the top of the new doc è·å¾—é€‰ ä¸­çš„å†…å®¹ï¼Œå¦‚æœæ˜¯ä¸€ä¸ªæ–°åˆ›å»ºçš„æ–‡ä»¶ï¼Œå› é‡Œé¢æ— å†…å®¹ï¼Œåˆ™å…‰æ ‡åº”å¤„äºæ–‡ä»¶å¼€å¤´å¤„
+		// the top of the new doc »ñµÃÑ¡ ÖĞµÄÄÚÈİ£¬Èç¹ûÊÇÒ»¸öĞÂ´´½¨µÄÎÄ¼ş£¬ÒòÀïÃæÎŞÄÚÈİ£¬Ôò¹â±êÓ¦´¦ÓÚÎÄ¼ş¿ªÍ·´¦
 		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch();
-		// å–æ¶ˆé€‰ä¸­,åº”è¯¥å°±æ˜¯ç§»åŠ¨å…‰æ ‡ ï¼Œå¦åˆ™ æ–°æ·»åŠ çš„å†…å®¹ä¼šè¦†ç›–é€‰ä¸­çš„å†…å®¹
+		// È¡ÏûÑ¡ÖĞ,Ó¦¸Ã¾ÍÊÇÒÆ¶¯¹â±ê £¬·ñÔò ĞÂÌí¼ÓµÄÄÚÈİ»á¸²¸ÇÑ¡ÖĞµÄÄÚÈİ
 		Dispatch.call(selection, "MoveRight", new Variant(1), new Variant(1));
 		// Put the specified text at the insertion point
 		Dispatch.put(selection, "Text", textToInsert);
-		// å–æ¶ˆé€‰ä¸­,åº”è¯¥å°±æ˜¯ç§»åŠ¨å…‰æ ‡
+		// È¡ÏûÑ¡ÖĞ,Ó¦¸Ã¾ÍÊÇÒÆ¶¯¹â±ê
 		Dispatch.call(selection, "MoveRight", new Variant(1), new Variant(1));
 	}
-	// å‘æ–‡æ¡£ä¸­æ·»åŠ  ä¸€ä¸ªå›¾ç‰‡ï¼Œ
+	// ÏòÎÄµµÖĞÌí¼Ó Ò»¸öÍ¼Æ¬£¬
 	public void insertJpeg(String jpegFilePath) {
 		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch();
 		Dispatch image = Dispatch.get(selection, "InLineShapes").toDispatch();
 		Dispatch.call(image, "AddPicture", jpegFilePath);
 	}
-	// æ®µè½çš„å¤„ç†,æ’å…¥æ ¼å¼åŒ–çš„æ–‡æœ¬
+	// ¶ÎÂäµÄ´¦Àí,²åÈë¸ñÊ½»¯µÄÎÄ±¾
 	public void insertFormatStr(String text) {
-		Dispatch wordContent = Dispatch.get(document, "Content").toDispatch(); // å–å¾—wordæ–‡ä»¶çš„å†…å®¹
-		Dispatch.call(wordContent, "InsertAfter", text);// æ’å…¥ä¸€ä¸ªæ®µè½åˆ°æœ€å
+		Dispatch wordContent = Dispatch.get(document, "Content").toDispatch(); // È¡µÃwordÎÄ¼şµÄÄÚÈİ
+		Dispatch.call(wordContent, "InsertAfter", text);// ²åÈëÒ»¸ö¶ÎÂäµ½×îºó
 		Dispatch paragraphs = Dispatch.get(wordContent, "Paragraphs")
-				.toDispatch(); // æ‰€æœ‰æ®µè½
+				.toDispatch(); // ËùÓĞ¶ÎÂä
 		int paragraphCount = Dispatch.get(paragraphs, "Count").changeType(
-				Variant.VariantInt).getInt();// ä¸€å…±çš„æ®µè½æ•°
-		// æ‰¾åˆ°åˆšè¾“å…¥çš„æ®µè½ï¼Œè®¾ç½®æ ¼å¼
+				Variant.VariantInt).getInt();// Ò»¹²µÄ¶ÎÂäÊı
+		// ÕÒµ½¸ÕÊäÈëµÄ¶ÎÂä£¬ÉèÖÃ¸ñÊ½
 		Dispatch lastParagraph = Dispatch.call(paragraphs, "Item",
-				new Variant(paragraphCount)).toDispatch(); // æœ€åä¸€æ®µï¼ˆä¹Ÿå°±æ˜¯åˆšæ’å…¥çš„ï¼‰
-		// Range å¯¹è±¡è¡¨ç¤ºæ–‡æ¡£ä¸­çš„ä¸€ä¸ªè¿ç»­èŒƒå›´ï¼Œç”±ä¸€ä¸ªèµ·å§‹å­—ç¬¦ä½ç½®å’Œä¸€ä¸ªç»ˆæ­¢å­—ç¬¦ä½ç½®å®šä¹‰
+				new Variant(paragraphCount)).toDispatch(); // ×îºóÒ»¶Î£¨Ò²¾ÍÊÇ¸Õ²åÈëµÄ£©
+		// Range ¶ÔÏó±íÊ¾ÎÄµµÖĞµÄÒ»¸öÁ¬Ğø·¶Î§£¬ÓÉÒ»¸öÆğÊ¼×Ö·ûÎ»ÖÃºÍÒ»¸öÖÕÖ¹×Ö·ûÎ»ÖÃ¶¨Òå
 		Dispatch lastParagraphRange = Dispatch.get(lastParagraph, "Range")
 				.toDispatch();
 		Dispatch font = Dispatch.get(lastParagraphRange, "Font").toDispatch();
-		Dispatch.put(font, "Bold", new Variant(true)); // è®¾ç½®ä¸ºé»‘ä½“
-		Dispatch.put(font, "Italic", new Variant(true)); // è®¾ç½®ä¸ºæ–œä½“
-		Dispatch.put(font, "Name", new Variant("å®‹ä½“")); //
-		Dispatch.put(font, "Size", new Variant(12)); // å°å››
+		Dispatch.put(font, "Bold", new Variant(true)); // ÉèÖÃÎªºÚÌå
+		Dispatch.put(font, "Italic", new Variant(true)); // ÉèÖÃÎªĞ±Ìå
+		Dispatch.put(font, "Name", new Variant("ËÎÌå")); //
+		Dispatch.put(font, "Size", new Variant(12)); // Ğ¡ËÄ
 		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch();
-		Dispatch.call(selection, "TypeParagraph");// æ’å…¥ä¸€ä¸ªç©ºè¡Œ
+		Dispatch.call(selection, "TypeParagraph");// ²åÈëÒ»¸ö¿ÕĞĞ
 		Dispatch alignment = Dispatch.get(selection, "ParagraphFormat")
-				.toDispatch();// æ®µè½æ ¼å¼
-		Dispatch.put(alignment, "Alignment", "2"); // (1:ç½®ä¸­ 2:é å³ 3:é å·¦)
+				.toDispatch();// ¶ÎÂä¸ñÊ½
+		Dispatch.put(alignment, "Alignment", "2"); // (1:ÖÃÖĞ 2:¿¿ÓÒ 3:¿¿×ó)
 	}
-	// word ä¸­åœ¨å¯¹è¡¨æ ¼è¿›è¡Œéå†çš„æ—¶å€™ ï¼Œæ˜¯å…ˆåˆ—åè¡Œ å…ˆcolumn åcell
-	// å¦å¤–ä¸‹æ ‡ä»1å¼€å§‹
+	// word ÖĞÔÚ¶Ô±í¸ñ½øĞĞ±éÀúµÄÊ±ºò £¬ÊÇÏÈÁĞºóĞĞ ÏÈcolumn ºócell
+	// ÁíÍâÏÂ±ê´Ó1¿ªÊ¼
 	public void insertTable(String tableTitle, int row, int column) {
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
-		Dispatch.call(selection, "TypeText", tableTitle); // å†™å…¥æ ‡é¢˜å†…å®¹ // æ ‡é¢˜æ ¼è¡Œ
-		Dispatch.call(selection, "TypeParagraph"); // ç©ºä¸€è¡Œæ®µè½
-		Dispatch.call(selection, "TypeParagraph"); // ç©ºä¸€è¡Œæ®µè½
-		Dispatch.call(selection, "MoveDown"); // æ¸¸æ ‡å¾€ä¸‹ä¸€è¡Œ
-		// å»ºç«‹è¡¨æ ¼
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
+		Dispatch.call(selection, "TypeText", tableTitle); // Ğ´Èë±êÌâÄÚÈİ // ±êÌâ¸ñĞĞ
+		Dispatch.call(selection, "TypeParagraph"); // ¿ÕÒ»ĞĞ¶ÎÂä
+		Dispatch.call(selection, "TypeParagraph"); // ¿ÕÒ»ĞĞ¶ÎÂä
+		Dispatch.call(selection, "MoveDown"); // ÓÎ±êÍùÏÂÒ»ĞĞ
+		// ½¨Á¢±í¸ñ
 		Dispatch tables = Dispatch.get(document, "Tables").toDispatch();
 		// int count = Dispatch.get(tables,
-		// "Count").changeType(Variant.VariantInt).getInt(); // documentä¸­çš„è¡¨æ ¼æ•°é‡
+		// "Count").changeType(Variant.VariantInt).getInt(); // documentÖĞµÄ±í¸ñÊıÁ¿
 		// Dispatch table = Dispatch.call(tables, "Item", new Variant(
-		// 1)).toDispatch();//æ–‡æ¡£ä¸­ç¬¬ä¸€ä¸ªè¡¨æ ¼
-		Dispatch range = Dispatch.get(selection, "Range").toDispatch();// /å½“å‰å…‰æ ‡ä½ç½®æˆ–è€…é€‰ä¸­çš„åŒºåŸŸ
+		// 1)).toDispatch();//ÎÄµµÖĞµÚÒ»¸ö±í¸ñ
+		Dispatch range = Dispatch.get(selection, "Range").toDispatch();// /µ±Ç°¹â±êÎ»ÖÃ»òÕßÑ¡ÖĞµÄÇøÓò
 		Dispatch newTable = Dispatch.call(tables, "Add", range,
 				new Variant(row), new Variant(column), new Variant(1))
-				.toDispatch(); // è®¾ç½®row,column,è¡¨æ ¼å¤–æ¡†å®½åº¦
-		Dispatch cols = Dispatch.get(newTable, "Columns").toDispatch(); // æ­¤è¡¨çš„æ‰€æœ‰åˆ—ï¼Œ
+				.toDispatch(); // ÉèÖÃrow,column,±í¸ñÍâ¿ò¿í¶È
+		Dispatch cols = Dispatch.get(newTable, "Columns").toDispatch(); // ´Ë±íµÄËùÓĞÁĞ£¬
 		int colCount = Dispatch.get(cols, "Count").changeType(
-				Variant.VariantInt).getInt();// ä¸€å…±æœ‰å¤šå°‘åˆ— å®é™…ä¸Šè¿™ä¸ªæ•°==column
-		System.out.println(colCount + "åˆ—");
-		for (int i = 1; i <= colCount; i++) { // å¾ªç¯å–å‡ºæ¯ä¸€åˆ—
+				Variant.VariantInt).getInt();// Ò»¹²ÓĞ¶àÉÙÁĞ Êµ¼ÊÉÏÕâ¸öÊı==column
+		System.out.println(colCount + "ÁĞ");
+		for (int i = 1; i <= colCount; i++) { // Ñ­»·È¡³öÃ¿Ò»ÁĞ
 			Dispatch col = Dispatch.call(cols, "Item", new Variant(i))
 					.toDispatch();
-			Dispatch cells = Dispatch.get(col, "Cells").toDispatch();// å½“å‰åˆ—ä¸­å•å…ƒæ ¼
+			Dispatch cells = Dispatch.get(col, "Cells").toDispatch();// µ±Ç°ÁĞÖĞµ¥Ôª¸ñ
 			int cellCount = Dispatch.get(cells, "Count").changeType(
-					Variant.VariantInt).getInt();// å½“å‰åˆ—ä¸­å•å…ƒæ ¼æ•° å®é™…ä¸Šè¿™ä¸ªæ•°ç­‰äºrow
-			for (int j = 1; j <= cellCount; j++) {// æ¯ä¸€åˆ—ä¸­çš„å•å…ƒæ ¼æ•°
+					Variant.VariantInt).getInt();// µ±Ç°ÁĞÖĞµ¥Ôª¸ñÊı Êµ¼ÊÉÏÕâ¸öÊıµÈÓÚrow
+			for (int j = 1; j <= cellCount; j++) {// Ã¿Ò»ÁĞÖĞµÄµ¥Ôª¸ñÊı
 				// Dispatch cell = Dispatch.call(cells, "Item", new
-				// Variant(j)).toDispatch(); //å½“å‰å•å…ƒæ ¼
+				// Variant(j)).toDispatch(); //µ±Ç°µ¥Ôª¸ñ
 				// Dispatch cell = Dispatch.call(newTable, "Cell", new
-				// Variant(j) , new Variant(i) ).toDispatch(); //å–å•å…ƒæ ¼çš„å¦ä¸€ç§æ–¹æ³•
-				// Dispatch.call(cell, "Select");//é€‰ä¸­å½“å‰å•å…ƒæ ¼
+				// Variant(j) , new Variant(i) ).toDispatch(); //È¡µ¥Ôª¸ñµÄÁíÒ»ÖÖ·½·¨
+				// Dispatch.call(cell, "Select");//Ñ¡ÖĞµ±Ç°µ¥Ôª¸ñ
 				// Dispatch.put(selection, "Text",
-				// "ç¬¬"+j+"è¡Œï¼Œç¬¬"+i+"åˆ—");//å¾€é€‰ä¸­çš„åŒºåŸŸä¸­å¡«å€¼ï¼Œä¹Ÿå°±æ˜¯å¾€å½“å‰å•å…ƒæ ¼å¡«å€¼
-				putTxtToCell(newTable, j, i, "ç¬¬" + j + "è¡Œï¼Œç¬¬" + i + "åˆ—");// ä¸ä¸Šé¢å››å¥çš„ä½œç”¨ç›¸åŒ
+				// "µÚ"+j+"ĞĞ£¬µÚ"+i+"ÁĞ");//ÍùÑ¡ÖĞµÄÇøÓòÖĞÌîÖµ£¬Ò²¾ÍÊÇÍùµ±Ç°µ¥Ôª¸ñÌîÖµ
+				putTxtToCell(newTable, j, i, "µÚ" + j + "ĞĞ£¬µÚ" + i + "ÁĞ");// ÓëÉÏÃæËÄ¾äµÄ×÷ÓÃÏàÍ¬
 			}
 		}
 	}
 	/** */
 	/**
-	 * åœ¨æŒ‡å®šçš„å•å…ƒæ ¼é‡Œå¡«å†™æ•°æ®
+	 * ÔÚÖ¸¶¨µÄµ¥Ôª¸ñÀïÌîĞ´Êı¾İ
 	 *
 	 * @param tableIndex
 	 * @param cellRowIdx
@@ -141,12 +141,12 @@ class WordBean {
 		Dispatch cell = Dispatch.call(table, "Cell", new Variant(cellRowIdx),
 				new Variant(cellColIdx)).toDispatch();
 		Dispatch.call(cell, "Select");
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
 		Dispatch.put(selection, "Text", txt);
 	}
 	/** */
 	/**
-	 * åœ¨æŒ‡å®šçš„å•å…ƒæ ¼é‡Œå¡«å†™æ•°æ®
+	 * ÔÚÖ¸¶¨µÄµ¥Ôª¸ñÀïÌîĞ´Êı¾İ
 	 *
 	 * @param tableIndex
 	 * @param cellRowIdx
@@ -155,18 +155,18 @@ class WordBean {
 	 */
 	public void putTxtToCell(int tableIndex, int cellRowIdx, int cellColIdx,
 			String txt) {
-		// æ‰€æœ‰è¡¨æ ¼
+		// ËùÓĞ±í¸ñ
 		Dispatch tables = Dispatch.get(document, "Tables").toDispatch();
-		// è¦å¡«å……çš„è¡¨æ ¼
+		// ÒªÌî³äµÄ±í¸ñ
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableIndex))
 				.toDispatch();
 		Dispatch cell = Dispatch.call(table, "Cell", new Variant(cellRowIdx),
 				new Variant(cellColIdx)).toDispatch();
 		Dispatch.call(cell, "Select");
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
 		Dispatch.put(selection, "Text", txt);
 	}
-	// åˆå¹¶ä¸¤ä¸ªå•å…ƒæ ¼
+	// ºÏ²¢Á½¸öµ¥Ôª¸ñ
 	public void mergeCell(Dispatch cell1, Dispatch cell2) {
 		Dispatch.call(cell1, "Merge", cell2);
 	}
@@ -180,21 +180,21 @@ class WordBean {
 	public void mergeCellTest() {
 		Dispatch tables = Dispatch.get(document, "Tables").toDispatch();
 		int tableCount = Dispatch.get(tables, "Count").changeType(
-				Variant.VariantInt).getInt(); // documentä¸­çš„è¡¨æ ¼æ•°é‡
+				Variant.VariantInt).getInt(); // documentÖĞµÄ±í¸ñÊıÁ¿
 		Dispatch table = Dispatch.call(tables, "Item", new Variant(tableCount))
-				.toDispatch();// æ–‡æ¡£ä¸­æœ€åä¸€ä¸ªtable
-		mergeCell(table, 1, 1, 1, 2);// å°†table ä¸­x=1,y=1 ä¸x=1,y=2çš„ä¸¤ä¸ªå•å…ƒæ ¼åˆå¹¶
+				.toDispatch();// ÎÄµµÖĞ×îºóÒ»¸ötable
+		mergeCell(table, 1, 1, 1, 2);// ½«table ÖĞx=1,y=1 Óëx=1,y=2µÄÁ½¸öµ¥Ôª¸ñºÏ²¢
 	}
 	// ========================================================
 	/** */
 	/**
-	 * æŠŠé€‰å®šçš„å†…å®¹æˆ–å…‰æ ‡æ’å…¥ç‚¹å‘ä¸Šç§»åŠ¨
+	 * °ÑÑ¡¶¨µÄÄÚÈİ»ò¹â±ê²åÈëµãÏòÉÏÒÆ¶¯
 	 *
 	 * @param pos
-	 *            ç§»åŠ¨çš„è·ç¦»
+	 *            ÒÆ¶¯µÄ¾àÀë
 	 */
 	public void moveUp(int pos) {
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
 		for (int i = 0; i < pos; i++) {
 			// MoveDown MoveLeft moveRight
 			// moveStart ( Dispatch.call(selection, "HomeKey", new Variant(6));
@@ -205,45 +205,45 @@ class WordBean {
 	}
 	/** */
 	/**
-	 * ä»é€‰å®šå†…å®¹æˆ–æ’å…¥ç‚¹å¼€å§‹æŸ¥æ‰¾æ–‡æœ¬
+	 * ´ÓÑ¡¶¨ÄÚÈİ»ò²åÈëµã¿ªÊ¼²éÕÒÎÄ±¾
 	 *
 	 * @param toFindText
-	 *            è¦æŸ¥æ‰¾çš„æ–‡æœ¬
-	 * @return boolean true-æŸ¥æ‰¾åˆ°å¹¶é€‰ä¸­è¯¥æ–‡æœ¬ï¼Œfalse-æœªæŸ¥æ‰¾åˆ°æ–‡æœ¬
+	 *            Òª²éÕÒµÄÎÄ±¾
+	 * @return boolean true-²éÕÒµ½²¢Ñ¡ÖĞ¸ÃÎÄ±¾£¬false-Î´²éÕÒµ½ÎÄ±¾
 	 */
 	public boolean find(String toFindText) {
 		if (toFindText == null || toFindText.equals(""))
 			return false;
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
-		// ä»selectionæ‰€åœ¨ä½ç½®å¼€å§‹æŸ¥è¯¢
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
+		// ´ÓselectionËùÔÚÎ»ÖÃ¿ªÊ¼²éÑ¯
 		Dispatch find = Dispatch.call(selection, "Find").toDispatch();
-		// è®¾ç½®è¦æŸ¥æ‰¾çš„å†…å®¹
+		// ÉèÖÃÒª²éÕÒµÄÄÚÈİ
 		Dispatch.put(find, "Text", toFindText);
-		// å‘å‰æŸ¥æ‰¾
+		// ÏòÇ°²éÕÒ
 		Dispatch.put(find, "Forward", "True");
-		// è®¾ç½®æ ¼å¼
+		// ÉèÖÃ¸ñÊ½
 		Dispatch.put(find, "Format", "True");
-		// å¤§å°å†™åŒ¹é…
+		// ´óĞ¡Ğ´Æ¥Åä
 		Dispatch.put(find, "MatchCase", "True");
-		// å…¨å­—åŒ¹é…
+		// È«×ÖÆ¥Åä
 		Dispatch.put(find, "MatchWholeWord", "True");
-		// æŸ¥æ‰¾å¹¶é€‰ä¸­
+		// ²éÕÒ²¢Ñ¡ÖĞ
 		return Dispatch.call(find, "Execute").getBoolean();
 	}
 	/** */
 	/**
-	 * æŠŠé€‰å®šé€‰å®šå†…å®¹è®¾å®šä¸ºæ›¿æ¢æ–‡æœ¬
+	 * °ÑÑ¡¶¨Ñ¡¶¨ÄÚÈİÉè¶¨ÎªÌæ»»ÎÄ±¾
 	 *
 	 * @param toFindText
-	 *            æŸ¥æ‰¾å­—ç¬¦ä¸²
+	 *            ²éÕÒ×Ö·û´®
 	 * @param newText
-	 *            è¦æ›¿æ¢çš„å†…å®¹
+	 *            ÒªÌæ»»µÄÄÚÈİ
 	 * @return
 	 */
 	public boolean replaceText(String toFindText, String newText) {
 		if (!find(toFindText))
 			return false;
-		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // è¾“å…¥å†…å®¹éœ€è¦çš„å¯¹è±¡
+		Dispatch selection = Dispatch.get(MsWordApp, "Selection").toDispatch(); // ÊäÈëÄÚÈİĞèÒªµÄ¶ÔÏó
 		Dispatch.put(selection, "Text", newText);
 		return true;
 	}
@@ -251,7 +251,7 @@ class WordBean {
 		// Just print the current document to the default printer
 		Dispatch.call(document, "PrintOut");
 	}
-	// ä¿å­˜æ–‡æ¡£çš„æ›´æ”¹
+	// ±£´æÎÄµµµÄ¸ü¸Ä
 	public void save() {
 		Dispatch.call(document, "Save");
 	}
@@ -271,7 +271,7 @@ class WordBean {
 		MsWordApp = null;
 		document = null;
 	}
-	// è®¾ç½®wordAppæ‰“å¼€åçª—å£çš„ä½ç½®
+	// ÉèÖÃwordApp´ò¿ªºó´°¿ÚµÄÎ»ÖÃ
 	public void setLocation() {
 		Dispatch activeWindow = Dispatch.get(MsWordApp, "Application")
 				.toDispatch();
@@ -287,59 +287,59 @@ class WordBean {
 public class Jacob {
 	public static void createANewFileTest() {
 		WordBean wordBean = new WordBean();
-		// word.openWord(true);// æ‰“å¼€ word ç¨‹åº
+		// word.openWord(true);// ´ò¿ª word ³ÌĞò
 		wordBean.setVisible(true);
-		wordBean.createNewDocument();// åˆ›å»ºä¸€ä¸ªæ–°æ–‡æ¡£
-		wordBean.setLocation();// è®¾ç½®æ‰“å¼€åçª—å£çš„ä½ç½®
-		wordBean.insertText("ä½ å¥½");// å‘æ–‡æ¡£ä¸­æ’å…¥å­—ç¬¦
-		wordBean.insertJpeg("D:" + File.separator + "a.jpg"); // æ’å…¥å›¾ç‰‡
-		// å¦‚æœ ï¼Œæƒ³ä¿å­˜æ–‡ä»¶ï¼Œä¸‹é¢ä¸‰å¥
+		wordBean.createNewDocument();// ´´½¨Ò»¸öĞÂÎÄµµ
+		wordBean.setLocation();// ÉèÖÃ´ò¿ªºó´°¿ÚµÄÎ»ÖÃ
+		wordBean.insertText("ÄãºÃ");// ÏòÎÄµµÖĞ²åÈë×Ö·û
+		wordBean.insertJpeg("D:" + File.separator + "a.jpg"); // ²åÈëÍ¼Æ¬
+		// Èç¹û £¬Ïë±£´æÎÄ¼ş£¬ÏÂÃæÈı¾ä
 		// word.saveFileAs("d://a.doc");
 		// word.closeDocument();
 		// word.closeWord();
 	}
 	public static void openAnExistsFileTest() {
 		WordBean wordBean = new WordBean();
-		wordBean.setVisible(true); // æ˜¯å¦å‰å°æ‰“å¼€word ç¨‹åºï¼Œæˆ–è€…åå°è¿è¡Œ
+		wordBean.setVisible(true); // ÊÇ·ñÇ°Ì¨´ò¿ªword ³ÌĞò£¬»òÕßºóÌ¨ÔËĞĞ
 		wordBean.openFile("D:\\1.docx");
-		wordBean.insertJpeg("D:" + File.separator + "a.jpg"); // æ’å…¥å›¾ç‰‡(æ³¨æ„åˆšæ‰“å¼€çš„word
-		// ï¼Œå…‰æ ‡å¤„äºå¼€å¤´ï¼Œæ•…ï¼Œå›¾ç‰‡åœ¨æœ€å‰æ–¹æ’å…¥)
+		wordBean.insertJpeg("D:" + File.separator + "a.jpg"); // ²åÈëÍ¼Æ¬(×¢Òâ¸Õ´ò¿ªµÄword
+		// £¬¹â±ê´¦ÓÚ¿ªÍ·£¬¹Ê£¬Í¼Æ¬ÔÚ×îÇ°·½²åÈë)
 		wordBean.save();
 		wordBean.closeDocument();
 		wordBean.closeWord();
 	}
 	public static void insertFormatStr(String str) {
 		WordBean wordBean = new WordBean();
-		wordBean.setVisible(true); // æ˜¯å¦å‰å°æ‰“å¼€word ç¨‹åºï¼Œæˆ–è€…åå°è¿è¡Œ
-		wordBean.createNewDocument();// åˆ›å»ºä¸€ä¸ªæ–°æ–‡æ¡£
-		wordBean.insertFormatStr(str);// æ’å…¥ä¸€ä¸ªæ®µè½ï¼Œå¯¹å…¶ä¸­çš„å­—ä½“è¿›è¡Œäº†è®¾ç½®
+		wordBean.setVisible(true); // ÊÇ·ñÇ°Ì¨´ò¿ªword ³ÌĞò£¬»òÕßºóÌ¨ÔËĞĞ
+		wordBean.createNewDocument();// ´´½¨Ò»¸öĞÂÎÄµµ
+		wordBean.insertFormatStr(str);// ²åÈëÒ»¸ö¶ÎÂä£¬¶ÔÆäÖĞµÄ×ÖÌå½øĞĞÁËÉèÖÃ
 	}
 	public static void insertTableTest() {
 		WordBean wordBean = new WordBean();
-		wordBean.setVisible(true); // æ˜¯å¦å‰å°æ‰“å¼€word ç¨‹åºï¼Œæˆ–è€…åå°è¿è¡Œ
-		wordBean.createNewDocument();// åˆ›å»ºä¸€ä¸ªæ–°æ–‡æ¡£
+		wordBean.setVisible(true); // ÊÇ·ñÇ°Ì¨´ò¿ªword ³ÌĞò£¬»òÕßºóÌ¨ÔËĞĞ
+		wordBean.createNewDocument();// ´´½¨Ò»¸öĞÂÎÄµµ
 		wordBean.setLocation();
-		wordBean.insertTable("è¡¨å", 3, 2);
+		wordBean.insertTable("±íÃû", 3, 2);
 		wordBean.saveFileAs("d://table.doc");
 		wordBean.closeDocument();
 		wordBean.closeWord();
 	}
 	public static void mergeTableCellTest() {
-		insertTableTest();//ç”Ÿæˆd://table.doc
+		insertTableTest();//Éú³Éd://table.doc
 		WordBean wordBean = new WordBean();
-		wordBean.setVisible(true); // æ˜¯å¦å‰å°æ‰“å¼€word ç¨‹åºï¼Œæˆ–è€…åå°è¿è¡Œ
+		wordBean.setVisible(true); // ÊÇ·ñÇ°Ì¨´ò¿ªword ³ÌĞò£¬»òÕßºóÌ¨ÔËĞĞ
 		wordBean.openFile("d://table.doc");
 		wordBean.mergeCellTest();
 	}
 	public static void main(String[] args) {
 
-		// è¿›è¡Œæµ‹è¯•å‰è¦ä¿è¯d://a.jpg å›¾ç‰‡æ–‡ä»¶å­˜åœ¨
-		// createANewFileTest();//åˆ›å»ºä¸€ä¸ªæ–°æ–‡ä»¶
-		// openAnExistsFileTest();// æ‰“å¼€ä¸€ä¸ªå­˜åœ¨ çš„æ–‡ä»¶
-		 insertFormatStr("æ ¼å¼ åŒ–å­—ç¬¦ä¸²");//å¯¹å­—ç¬¦ä¸²è¿›è¡Œä¸€å®šçš„ä¿®é¥°
-		 insertFormatStr("233æ ¼å¼ åŒ–å­—ç¬¦ä¸²");//å¯¹å­—ç¬¦ä¸²è¿›è¡Œä¸€å®šçš„ä¿®é¥°
-//		insertTableTest();// åˆ›å»ºä¸€ä¸ªè¡¨æ ¼
+		// ½øĞĞ²âÊÔÇ°Òª±£Ö¤d://a.jpg Í¼Æ¬ÎÄ¼ş´æÔÚ
+		// createANewFileTest();//´´½¨Ò»¸öĞÂÎÄ¼ş
+		// openAnExistsFileTest();// ´ò¿ªÒ»¸ö´æÔÚ µÄÎÄ¼ş
+		 insertFormatStr("¸ñÊ½ »¯×Ö·û´®");//¶Ô×Ö·û´®½øĞĞÒ»¶¨µÄĞŞÊÎ
+		 insertFormatStr("233¸ñÊ½ »¯×Ö·û´®");//¶Ô×Ö·û´®½øĞĞÒ»¶¨µÄĞŞÊÎ
+//		insertTableTest();// ´´½¨Ò»¸ö±í¸ñ
 		 openAnExistsFileTest();
-	   //mergeTableCellTest();// å¯¹è¡¨æ ¼ä¸­çš„å•å…ƒæ ¼è¿›è¡Œåˆå¹¶
+	   //mergeTableCellTest();// ¶Ô±í¸ñÖĞµÄµ¥Ôª¸ñ½øĞĞºÏ²¢
 	}
 }

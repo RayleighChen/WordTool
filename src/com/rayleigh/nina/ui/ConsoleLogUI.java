@@ -5,6 +5,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.rayleigh.nina.log.ConsoleTextArea;
 import com.rayleigh.nina.log.ConsoleTextPane;
 
 public class ConsoleLogUI extends JPanel {
@@ -17,11 +18,11 @@ public class ConsoleLogUI extends JPanel {
 		this.setLayout(null);
 		this.setBorder(BorderFactory.createEtchedBorder());
 
-		JLabel title = new JLabel("è¾“å‡ºæ—¥å¿—");
+		JLabel title = new JLabel("Êä³öÈÕÖ¾");
 		title.setSize(80, 20);
 		title.setLocation(20, 0);
 		this.add(title);
-
+//
 		ConsoleTextPane.getInstance().setFont(
 				java.awt.Font.decode("monospaced"));
 		ConsoleTextPane.getInstance().setEditable(false);

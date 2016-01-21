@@ -9,7 +9,7 @@ public class TestDocPage {
 	
 	 public static void main (String [] args) throws Exception {
 		 
-		   String filePath = "D:\\ÂèÇËÄÉ.doc";
+		   String filePath = "D:\\≤Œøº.doc";
 		   
 		   ActiveXComponent word=new ActiveXComponent("Word.Application");
 		   
@@ -31,15 +31,15 @@ public class TestDocPage {
 	           
 	           if(outline<=9){
 	        	   
-		           System.out.println("Â§ßÁ∫≤Á≠âÁ∫ßÔºö"+outline);
+		           System.out.println("¥Û∏Ÿµ»º∂£∫"+outline);
 		           System.out.println("\n");
 		           Dispatch paraRange=Dispatch.get(paragraph, "Range").toDispatch();
 		
-		           System.out.println("Ê†áÈ¢òÂêçÁß∞Ôºö"+Dispatch.get(paraRange, "Text").toString());
+		           System.out.println("±ÍÃ‚√˚≥∆£∫"+Dispatch.get(paraRange, "Text").toString());
 		
 		           int pages = Integer.parseInt(Dispatch.call(paraRange,"information",1).toString());
 		           
-		           System.out.println("Ê†áÈ¢òÈ°µÁ†ÅÔºö"+pages);
+		           System.out.println("±ÍÃ‚“≥¬Î£∫"+pages);
 		           System.out.println("\n");
 	      
 	           }

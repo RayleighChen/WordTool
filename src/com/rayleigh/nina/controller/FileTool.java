@@ -65,9 +65,9 @@ public class FileTool {
 
 		for (int i = 0; i < existFilesList.length; i++) {
 			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')));
-			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/åŽŸæž");
-			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/æ‹†åˆ†åŽ");
-			copy(root + "/" + existFilesList[i], root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/åŽŸæž/" + existFilesList[i]);
+			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/Ô­¸ã");
+			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/²ð·Öºó");
+			copy(root + "/" + existFilesList[i], root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/Ô­¸ã/" + existFilesList[i]);
 		}
 	}
 	
@@ -92,7 +92,7 @@ public class FileTool {
 		for (int j = 0; j < source.length; j++) {
 			if (isExistMap.get(source[j].substring(0, source[j].lastIndexOf('.'))) == null) {
 				notExistFiles.add(source[j]);
-				System.out.println("æ–°å¢žæ–‡ä»¶å¤¹: " + source[j].substring(0, source[j].lastIndexOf('.')));
+				System.out.println("ÐÂÔöÎÄ¼þ¼Ð: " + source[j].substring(0, source[j].lastIndexOf('.')));
 			}
 		}
 

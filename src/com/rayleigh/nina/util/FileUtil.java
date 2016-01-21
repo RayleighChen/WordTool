@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class FileUtil {
 
-	private static void copy(String source, String target) {
+	public static void copy(String source, String target) {
 		try {
 			int bytesum = 0;
 			int byteread = 0;
@@ -25,6 +25,7 @@ public class FileUtil {
 					fs.write(buffer, 0, byteread);
 				}
 				inStream.close();
+				fs.close();
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -33,7 +34,7 @@ public class FileUtil {
 	}
 
 
-	private static String[] readFolder(String root) {
+	public static String[] readFolder(String root) {
 		File file = new File(root);
 		if (file.isDirectory()) {
 			String[] fileList = file.list(new DocFilter());
@@ -65,10 +66,14 @@ public class FileUtil {
 
 		for (int i = 0; i < existFilesList.length; i++) {
 			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')));
-			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/åŽŸæž");
-			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/æ‹†åˆ†åŽ");
-			copy(root + "/" + existFilesList[i], root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/åŽŸæž/" + existFilesList[i]);
+			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/Ô­¸ã");
+			mkdir(root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/²ð·Öºó");
+			copy(root + "/" + existFilesList[i], root + "/" + existFilesList[i].substring(0, existFilesList[i].lastIndexOf('.')) + "/Ô­¸ã/" + existFilesList[i]);
 		}
+	}
+	
+	public static void creatSimpleTree(String root) {
+		
 	}
 	
 	public static void mkdir(String root) {
@@ -92,7 +97,7 @@ public class FileUtil {
 		for (int j = 0; j < source.length; j++) {
 			if (isExistMap.get(source[j].substring(0, source[j].lastIndexOf('.'))) == null) {
 				notExistFiles.add(source[j]);
-				System.out.println("æ–°å¢žæ–‡ä»¶å¤¹: " + source[j].substring(0, source[j].lastIndexOf('.')));
+				System.out.println("ÐÂÔöÎÄ¼þ¼Ð: " + source[j].substring(0, source[j].lastIndexOf('.')));
 			}
 		}
 

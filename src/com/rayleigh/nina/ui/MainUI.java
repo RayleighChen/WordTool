@@ -16,13 +16,19 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import com.rayleigh.nina.bean.DocBean;
+import com.rayleigh.nina.bean.OutlineBean;
 import com.rayleigh.nina.log.ConsoleTextPane;
+import com.rayleigh.nina.util.FileUtil;
+import com.rayleigh.nina.util.OutLineUtil;
 import com.rayleigh.nina.util.XmlUtil;
+import com.rayleigh.nina.util.WordUtil;
 
 public class MainUI extends JDialog {
 
@@ -64,8 +70,8 @@ public class MainUI extends JDialog {
 	private void initialize() {
 		frmD = new JFrame();
 		frmD.getContentPane().setBackground(Color.WHITE);
-		frmD.setFont(new Font("å¾®è½¯é›…é»‘", Font.PLAIN, 12));
-		frmD.setTitle("æ™“æ™“ä¸“ç”¨è¾…åŠ©å·¥å…·");
+		frmD.setFont(new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		frmD.setTitle("ÏþÏþ×¨ÓÃ¸¨Öú¹¤¾ß");
 		frmD.setBounds(100, 100, 840, 672);
 		frmD.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -90,6 +96,9 @@ public class MainUI extends JDialog {
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setLocationRelativeTo(null);
 					dialog.setVisible(true);
+					for (int i = 0; i < 1000; i++) {
+						System.err.println(i);
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -98,24 +107,24 @@ public class MainUI extends JDialog {
 		mnHelp.add(mntmAbout);
 		frmD.getContentPane().setLayout(null);
 
-		JLabel label = new JLabel("æ–‡ä»¶è·¯å¾„ï¼š");
-		label.setFont(new Font("å®‹ä½“", Font.BOLD, 14));
+		JLabel label = new JLabel("ÎÄ¼þÂ·¾¶£º");
+		label.setFont(new Font("ËÎÌå", Font.BOLD, 14));
 		label.setBounds(24, 22, 75, 16);
 		frmD.getContentPane().add(label);
 
 		docBean = new DocBean();
 		docUtil = new XmlUtil(docBean);
 		docUtil.getIndexOfBean(0);
-		
+
 		rootTf = new JTextField();
 		rootTf.setEditable(false);
 		rootTf.setText(docBean.getRoot());
 		rootTf.setColumns(10);
-		rootTf.setBounds(109, 17, 467, 28);
+		rootTf.setBounds(109, 17, 427, 28);
 		frmD.getContentPane().add(rootTf);
 
 		JButton lookBt = new JButton("\u6D4F\u89C8");
-		lookBt.setBounds(610, 16, 93, 28);
+		lookBt.setBounds(549, 16, 79, 28);
 		lookBt.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -124,25 +133,43 @@ public class MainUI extends JDialog {
 		});
 		frmD.getContentPane().add(lookBt);
 
-		JButton comfitmBt = new JButton("ç¡®å®š");
-		comfitmBt.setBounds(713, 16, 93, 28);
+		JButton comfitmBt = new JButton("È·¶¨");
+		comfitmBt.setBounds(638, 16, 76, 28);
 		comfitmBt.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				process();
-				
+
 			}
 		});
 		frmD.getContentPane().add(comfitmBt);
+
+		JButton btnpdf = new JButton("PDF");
+		btnpdf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				toPdf();
+			}
+		});
+		btnpdf.setBounds(739, 5, 75, 26);
+		frmD.getContentPane().add(btnpdf);
+
+		JButton button = new JButton("\u5355\u9875");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				getOnePageDocs();
+			}
+		});
+		button.setBounds(739, 35, 75, 25);
+		frmD.getContentPane().add(button);
 	}
 
-	//E:/Learning/helpOthers/sd/Test
+	// E:/Learning/helpOthers/sd/Test
 	private void lookUp(String buttonName) {
 
 		if (buttonName.equals("lookBt")) {
-			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 			int intRetVal = fc.showOpenDialog(this);
 			if (intRetVal == JFileChooser.APPROVE_OPTION) {
 				rootTf.setText(fc.getSelectedFile().getPath()
@@ -153,10 +180,116 @@ public class MainUI extends JDialog {
 			}
 		}
 	}
-	
+
+	private void getOnePageDocs() {
+		ConsoleTextPane.getInstance().clearLog();
+		WordUtil wd = new WordUtil(false);
+		String foldeRoot = docBean.getRoot().substring(0,
+				docBean.getRoot().lastIndexOf('.'))
+				+ "/²ð·Öºó/";
+		wd.setSaveOnExit(false);
+		File file = new File(foldeRoot);
+
+		String[] folders = file.list();
+
+		for (int i = 0; i < folders.length; i++) {
+			File files = new File(foldeRoot + folders[i] + "/wordÎÄ¼þ");
+			String[] fileList = files.list();
+
+			String docPath = null;
+			for (int j = 0; j < fileList.length; j++) {
+				docPath = foldeRoot + folders[i] + "/wordÎÄ¼þ/" + fileList[j];
+				wd.openDocument(docPath.replace("/", "\\"));
+
+				String result = "";
+				int k = 0;
+				while (k < 3) {
+					int lastFirst = docPath.lastIndexOf('/');
+					result = docPath.substring(lastFirst) + result;
+					docPath = docPath.substring(0, lastFirst);
+					k++;
+				}
+				int numOfPages = wd.getNumOfPages();
+				if (numOfPages == 1) {
+					System.err.println(result.substring(1) + " : " + numOfPages
+							+ " Ò³");
+				} else {
+					System.out.println(result.substring(1) + " : " + numOfPages
+							+ " Ò³");
+				}
+			}
+
+		}
+		wd.closeDocument();
+		wd.close();
+
+	}
+
+	private void toPdf() {
+		ConsoleTextPane.getInstance().clearLog();
+		WordUtil pdf = new WordUtil(false);
+		String foldeRoot = docBean.getRoot().substring(0,
+				docBean.getRoot().lastIndexOf('.'))
+				+ "/²ð·Öºó/";
+
+		File file = new File(foldeRoot);
+
+		String[] folders = file.list();
+
+		for (int i = 0; i < folders.length; i++) {
+			File files = new File(foldeRoot + folders[i] + "/wordÎÄ¼þ");
+			String[] fileList = files.list();
+			for (int j = 0; j < fileList.length; j++) {
+				String docPath = foldeRoot + folders[i] + "/wordÎÄ¼þ/"
+						+ fileList[j];
+				String pdfPath = foldeRoot
+						+ folders[i]
+						+ "/PDFÎÄ¼þ/"
+						+ fileList[j]
+								.substring(0, fileList[j].lastIndexOf('.'))
+						+ ".pdf";
+				pdf.toPdf(docPath.replace("/", "\\"),
+						pdfPath.replace("/", "\\"));
+			}
+		}
+		pdf.closeDocument();
+		pdf.close();
+	}
+
 	private void process() {
 		ConsoleTextPane.getInstance().clearLog();
-		System.out.println("æ—©ç‚¹å®žçŽ°èƒ½åŠ›ï¼");
-		System.err.println("çœ‹è§æ²¡æœ‰å‘¢~~0~");
+		String root = docBean.getRoot().substring(0,
+				docBean.getRoot().lastIndexOf('/'));
+		String initFolder = docBean.getRoot().substring(0,
+				docBean.getRoot().lastIndexOf('.'));
+		String filename = root + "/outline.txt";
+
+		ArrayList<OutlineBean> outlins = new OutLineUtil()
+				.readFileByLines(filename);
+		FileUtil.mkdir(initFolder);
+		FileUtil.mkdir(initFolder + "/²ð·Öºó");
+		FileUtil.mkdir(initFolder + "/Ô­¸å");
+		FileUtil.copy(
+				docBean.getRoot(),
+				initFolder
+						+ "/Ô­¸å/"
+						+ docBean.getRoot().substring(
+								docBean.getRoot().lastIndexOf('/'),
+								docBean.getRoot().length()));
+		for (int i = 0; i < outlins.size(); i++) {
+			if (outlins.get(i).isFold()) {
+				FileUtil.mkdir(initFolder + "/²ð·Öºó/" + outlins.get(i).getName());
+				FileUtil.mkdir(initFolder + "/²ð·Öºó/" + outlins.get(i).getName()
+						+ "/PDFÎÄ¼þ");
+				FileUtil.mkdir(initFolder + "/²ð·Öºó/" + outlins.get(i).getName()
+						+ "/wordÎÄ¼þ");
+			}
+			if (outlins.get(i).isFile()) {
+				FileUtil.copy(root + "/ÎÄ¼þÄ£°å.doc", initFolder + "/²ð·Öºó/"
+						+ outlins.get(i).getParent() + "/wordÎÄ¼þ/"
+						+ outlins.get(i).getName() + ".doc");
+			}
+		}
+		System.out.println("»ù´¡ÎÄ¼þÉú³ÉÍê±Ï£¡");
 	}
 }

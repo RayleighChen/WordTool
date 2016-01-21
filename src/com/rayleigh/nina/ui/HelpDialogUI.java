@@ -44,7 +44,7 @@ public class HelpDialogUI extends JDialog {
 
 		JEditorPane dtrpnEtltoolsetlexcelidddletl = new JEditorPane();
 		dtrpnEtltoolsetlexcelidddletl
-				.setText("鏅撴檽涓撶敤宸ュ叿锛歕n鍚濮戝閲嶅鎷嗕功鎸鸿緵鑻︾殑锛屾兂鐫�鍋氫竴涓悎鐞嗙殑灏忓伐鍏凤紝鏂逛究鑷姩鍖栫殑浣跨敤\n杩欐牱宸ヤ綔鏁堢巼璧锋潵浜嗭紝鍙互鍋氫簺鍏跺畠鎰夊揩鐨勪簨鎯呬簡\n\n鐗堟潈鎵�鏈夛細Chenli锛寁chenli.com");
+				.setText("晓晓专用工具：\n听说姑娘重复拆书挺辛苦的，想着做一个合理的小工具，方便自动化的使用\n这样工作效率起来了，可以做些其它愉快的事情了\n\n版权所有：Chenli，vchenli.com");
 		dtrpnEtltoolsetlexcelidddletl.setToolTipText("");
 		dtrpnEtltoolsetlexcelidddletl.setEditable(false);
 		dtrpnEtltoolsetlexcelidddletl.setBounds(0, 11, 424, 207);

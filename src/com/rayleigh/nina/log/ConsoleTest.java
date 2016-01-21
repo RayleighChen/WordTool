@@ -37,26 +37,26 @@ public class ConsoleTest extends JFrame {
 		new ConsoleTest().display();
 		for (int i = 0; i < 1000; ++i) {
 			System.out
-					.println("å˜æ›´å·ï¼š20141013001\nLocked: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nåˆå§‹åŒ–å˜æ›´å®Œæˆ");
+					.println("±ä¸üºÅ£º20141013001\nLocked: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\n³õÊ¼»¯±ä¸üÍê³É");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.err
-					.println("å˜æ›´å·ï¼šERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
-			System.out.println("åˆå§‹åŒ–æ‰€æœ‰å˜æ›´å·\nè¯·ç¨ç­‰....\nåˆå§‹åŒ–æ‰€æœ‰å˜æ›´å®Œæˆ");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
+			System.out.println("³õÊ¼»¯ËùÓÐ±ä¸üºÅ\nÇëÉÔµÈ....\n³õÊ¼»¯ËùÓÐ±ä¸üÍê³É");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.err
-					.println("å˜æ›´å·ï¼šERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.err
-					.println("å˜æ›´å·ï¼šERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºERROR20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 			System.out
-					.println("å˜æ›´å·ï¼šINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(ä»‹è´¨åè®®å…³ç³»åŽ†å²).xls\nBack: T01_PTY_IDENT_INFO_H_S12(å½“äº‹äººé‰´åˆ«ä¿¡æ¯åŽ†å²).xls\nå˜æ›´å†…å®¹å†™å›ž");
+					.println("±ä¸üºÅ£ºINFOO20141013001\nBack: T03_ACC_DEV_AGMT_RELA_H_S01(½éÖÊÐ­Òé¹ØÏµÀúÊ·).xls\nBack: T01_PTY_IDENT_INFO_H_S12(µ±ÊÂÈË¼ø±ðÐÅÏ¢ÀúÊ·).xls\n±ä¸üÄÚÈÝÐ´»Ø");
 		}
 
 		try {
