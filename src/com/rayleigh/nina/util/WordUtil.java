@@ -951,28 +951,19 @@ public class WordUtil {
 	}
 	
 	public void fitFirstDoc() {
-		Dispatch activeDocument = Dispatch.get(word, "ActiveDocument")
-				.toDispatch();	
-		Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
-
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // 取得word文件的内容
+		Dispatch.call(wordContent, "Select");
+		Dispatch font = Dispatch.get(selection, "Font").toDispatch();
+		
+		Dispatch.put(font, "Name", new Variant("宋体"));
+		Dispatch.put(font, "Size", "12");
 		moveStart();
-		for(int i = 0; i < Dispatch.call(activeDocument, "ComputeStatistics", 5).getInt() + 20;i++) {
-			
-			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
-					new Variant(1)).toDispatch();
-			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
-			Dispatch font = Dispatch.get(range, "Font").toDispatch();
-			Dispatch.put(font, "Name", new Variant("宋体"));
-			Dispatch.put(font, "Color", "0,0,0,0");
-			Dispatch.put(font, "Size", "12");
-			moveRight(1);
-		}
-		save();
-		moveStart();
+		
 		replaceAllText("­", "");
 		moveStart();
 		replaceAllText("　", " ");
 		moveStart();
+		save();
 	}
 	
 	public void fitContent() {
@@ -1000,85 +991,96 @@ public class WordUtil {
 	}
 	
 	public void fitPic(HashMap<String, String> picFit) {
-		moveStart();
-		Dispatch shapes = Dispatch.get(doc, "InLineShapes").toDispatch();
-
-		int counts = Dispatch.get(shapes, "Count").getInt();
-		for (int i = 0; i < counts; i++) {
-			Dispatch shape = Dispatch.call(shapes, "Item",
-					new Variant(i + 1)).toDispatch();
-			Dispatch.call(shape, "Select");
-			Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
-			Dispatch.put(paragraphs, "LineSpacingRule", 0);
-		}
-
-		
-		// TODO Auto-generated method stub
-		for (Map.Entry<String, String> entry : picFit.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
+		if (picFit != null) {
 			moveStart();
-			if(find(key.trim())){
-				setFont(false, false, false, "0,0,0,0", "10.5", "宋体", "1");
-				Dispatch.put(selection, "Text", value.trim());
+			Dispatch shapes = Dispatch.get(doc, "InLineShapes").toDispatch();
+
+			int counts = Dispatch.get(shapes, "Count").getInt();
+			for (int i = 0; i < counts; i++) {
+				Dispatch shape = Dispatch.call(shapes, "Item",
+						new Variant(i + 1)).toDispatch();
+				Dispatch.call(shape, "Select");
 				Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
 				Dispatch.put(paragraphs, "LineSpacingRule", 0);
 			}
-			moveStart();
-			replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
-		    
-			moveRight(1);
-		}  
+
+			
+			// TODO Auto-generated method stub
+			for (Map.Entry<String, String> entry : picFit.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				moveStart();
+				if(find(key.trim())){
+					setFont(false, false, false, "0,0,0,0", "10.5", "宋体", "1");
+					Dispatch.put(selection, "Text", value.trim());
+					Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+					Dispatch.put(paragraphs, "LineSpacingRule", 0);
+				}
+				moveStart();
+				replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
+			    
+				moveRight(1);
+			}  
+		}
 	}
 	
 	public void fitTable(HashMap<String, String> tableFit) {
 		// TODO Auto-generated method stub
-		
-		moveStart();
-		Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
-
-		int counts = Dispatch.get(tables, "Count").getInt();
-		for (int i = 0; i < counts; i++) {
-			Dispatch table = Dispatch.call(tables, "Item",
-					new Variant(i + 1)).toDispatch();
-			Dispatch.call(table, "Select");
-			Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
-			Dispatch.put(paragraphs, "LineSpacingRule", 0);
-		}
-
-		
-		// TODO Auto-generated method stub
-		for (Map.Entry<String, String> entry : tableFit.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
+		if (tableFit != null) {
 			moveStart();
-			if(find(key.trim())){
-				setFont(false, false, false, "0,0,0,0", "10.5", "黑体", "1");
-				Dispatch.put(selection, "Text", value.trim());
+			Dispatch tables = Dispatch.get(doc, "Tables").toDispatch();
+
+			int counts = Dispatch.get(tables, "Count").getInt();
+			for (int i = 0; i < counts; i++) {
+				Dispatch table = Dispatch.call(tables, "Item",
+						new Variant(i + 1)).toDispatch();
+				Dispatch.call(table, "Select");
 				Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
 				Dispatch.put(paragraphs, "LineSpacingRule", 0);
 			}
-			moveStart();
-			replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
-		    
-			moveRight(1);
-		}  
+
+			
+			// TODO Auto-generated method stub
+			for (Map.Entry<String, String> entry : tableFit.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				moveStart();
+				if(find(key.trim())){
+					setFont(false, false, false, "0,0,0,0", "10.5", "黑体", "1");
+					Dispatch.put(selection, "Text", value.trim());
+					Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+					Dispatch.put(paragraphs, "LineSpacingRule", 0);
+				}
+				moveStart();
+				replaceAllText(key.substring(0, key.indexOf(" ")), value.substring(0, value.indexOf(" ")));
+			    
+				moveRight(1);
+			}  
+		}
 	}
 
 	public void fitNewTimes() {
-		Dispatch activeDocument = Dispatch.get(word, "ActiveDocument")
-				.toDispatch();	
-		Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
-
-		moveStart();
-		for(int i = 0; i < Dispatch.call(activeDocument, "ComputeStatistics", 5).getInt() + 20;i++) {
-			
-			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
-					new Variant(1)).toDispatch();
-			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
-			Dispatch font = Dispatch.get(range, "Font").toDispatch();
-			Dispatch.put(font, "Name", new Variant("Times New Roman"));
-			moveRight(1);
-		}
+//		Dispatch activeDocument = Dispatch.get(word, "ActiveDocument")
+//				.toDispatch();	
+//		Dispatch paragraphs = Dispatch.get(selection, "Paragraphs").toDispatch();
+//
+//		moveStart();
+//		for(int i = 0; i < Dispatch.call(activeDocument, "ComputeStatistics", 5).getInt() + 20;i++) {
+//			
+//			Dispatch paragraph = Dispatch.call(paragraphs, "Item",
+//					new Variant(1)).toDispatch();
+//			Dispatch range = Dispatch.get(paragraph, "Range").toDispatch();
+//			Dispatch font = Dispatch.get(range, "Font").toDispatch();
+//			Dispatch.put(font, "Name", new Variant("宋体"));
+//			moveRight(1);
+//		}
+		
+		Dispatch wordContent = Dispatch.get(doc, "Content").toDispatch(); // 取得word文件的内容
+		Dispatch.call(wordContent, "Select");
+		Dispatch font = Dispatch.get(selection, "Font").toDispatch();
+		Dispatch.put(font, "Name", new Variant("Times New Roman"));
+		moveRight(1);
+		
+		
 	}
 }

@@ -1,84 +1,168 @@
 package com.rayleigh.nina.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import com.rayleigh.nina.bean.DocBean;
+import com.rayleigh.nina.bean.OutlineBean;
 import com.rayleigh.nina.util.FileUtil;
+import com.rayleigh.nina.util.OutLineUtil;
 import com.rayleigh.nina.util.WordUtil;
 import com.rayleigh.nina.util.XmlUtil;
 
 public class WorkTool {
 	
 	private String root;
+	ArrayList<OutlineBean> outlins;
+	private HashMap<String, OutlineBean> docFile = new HashMap<String, OutlineBean>();
+	private HashMap<String, String> picFit = null;
+	private HashMap<String, String> tableFit = null;
 	
-	private HashMap<String, String> picFit = new HashMap<String, String>();
-	private HashMap<String, String> tableFit = new HashMap<String, String>();
 	
-	public void work(String root) {
+	public WorkTool(){
 		// TODO Auto-generated method stub
-		WordUtil wdUtil = new WordUtil(true);
 		DocBean docBean = new DocBean();
 		XmlUtil xmlUtil = new XmlUtil(docBean);
 		xmlUtil.getIndexOfBean(0);
-//		wdUtil.openDocument(docBean.getRoot().replace("/", "\\"));
-		wdUtil.openDocument("D:\\test.doc");
+		
+		root = docBean.getRoot();
+		String filename = root.substring(0,
+				root.lastIndexOf('/')) + "/outline.txt";
+
+		outlins = new OutLineUtil()
+				.readFileByLines(filename);
+		for (int i = 0; i < outlins.size(); i++) {
+			if (outlins.get(i).getName().indexOf(' ') > 0) {
+				docFile.put(outlins.get(i).getName().substring(outlins.get(i).getName().indexOf(' '), outlins.get(i).getName().length()), outlins.get(i));
+			}
+			else {
+				docFile.put(outlins.get(i).getName(), outlins.get(i));
+			}
+		}
+		
+		for (Iterator doc = docFile.entrySet().iterator(); doc.hasNext();) {
+			Entry<String, OutlineBean> entry = (Entry<String, OutlineBean>) doc.next();
+//			System.err.println(entry.getKey());
+		}
+	}
+	
+	public void work() {
+		// TODO Auto-generated method stub
+//		wdUtil.openDocument(root.replace("/", "\\"));
+		WordUtil wdUtil = new WordUtil(true);
+		wdUtil.openDocument(root);
 		wdUtil.fitFirstDoc();
 		int numOfParagraphs = wdUtil.getNumOfParagraphs();
 		int i = 0;
-		wdUtil.openDocument("D:\\Êñá‰ª∂Ê®°Êùø.doc");
-		wdUtil.replaceText("Âçï‰∏™Êñá‰ª∂Ê®°Êùø", "ÂØºÊ≠£ÈîÄÂ∏¶ÊñôÁöÑÂØºÊ≠£ÂÆö‰Ωç");
-		wdUtil.moveDown(1);
+;
 		int picIndex = 0;
 		int tableIndex = 0;
 		boolean tmp = true;
 		boolean tableFlag = false;
+		boolean isfirst = true;
+		OutlineBean outline = null;
+		String simpleFile = null;
+		
 		while (i != numOfParagraphs) {
 			
 			
-			String docContent = wdUtil.getParagraphFromAnotherDoc("D:\\test.doc", i + 1);
-			
-			if (docContent.substring(0, 1).equals("Âõæ")) {
-				picIndex++;
-				picFit.put(docContent, "Âõæ"+picIndex+" "+docContent.substring(docContent.indexOf(' '), docContent.length()));
+			String docContent = wdUtil.getParagraphFromAnotherDoc(root, i + 1);
+			if (docContent.trim().indexOf(' ') >= 0) {				
+				outline = docFile.get(docContent.trim().substring(docContent.trim().indexOf(' '), docContent.trim().length()));
+				if (outline != null) {
+					if (outline.isFile()) {
+						
+						if (!isfirst) {
+							wdUtil.fitContent();
+							wdUtil.fitTitle();
+							wdUtil.fitPic(picFit);
+							wdUtil.fitTable(tableFit);
+							wdUtil.fitNewTimes();
+							wdUtil.setTableStyle();
+							System.out.println("Œƒº˛¥¶¿ÌÕÍ±œ°£°£°£");
+							System.out.println();
+						}
+						
+						simpleFile = root.substring(0,
+								root.lastIndexOf('.')) + "/≤∑÷∫Û/" + outline.getParent() + "/wordŒƒº˛/" + outline.getName() + ".doc";
+						System.err.println(simpleFile.replace("/", "\\"));
+						wdUtil.openDocument(simpleFile.replace("/", "\\"));
+
+						System.out.println("ø™ º¥¶¿Ì°£°£°£" + outline.getParent() + "/wordŒƒº˛/" + outline.getName() + ".doc");
+						wdUtil.replaceText("µ•∏ˆŒƒº˛ƒ£∞Â", docContent.trim().substring(docContent.trim().indexOf(' '), docContent.trim().length()));
+						wdUtil.moveDown(1); 
+						picIndex = 0;
+						 tableIndex = 0;
+						 isfirst = false;
+						 picFit = new HashMap<String, String>();
+						 tableFit = new HashMap<String, String>();
+						 
+					}
+					i++;
+					continue;
+				}
 			}
-			if (docContent.substring(0, 1).equals("Ë°®")) {
+			
+			if (docContent.substring(0, 1).equals("Õº")) {
+				picIndex++;
+				picFit.put(docContent, "Õº"+picIndex+" "+docContent.substring(docContent.indexOf(' '), docContent.length()));
+			}
+			if (docContent.substring(0, 1).equals("±Ì")) {
 				tableIndex++;
-				tableFit.put(docContent, "Ë°®"+tableIndex+" "+docContent.substring(docContent.indexOf(' '), docContent.length()));
+				tableFit.put(docContent, "±Ì"+tableIndex+" "+docContent.substring(docContent.indexOf(' '), docContent.length()));
 				tableFlag = true;
 				tmp = false;
 			}
+			if (docContent.trim().length() >= 2) {
+				if (docContent.trim().substring(0, 2).equals("∏Ω±Ì")) {
+					tableIndex++;
+					tableFit.put(docContent, "∏Ω±Ì"+tableIndex+" "+docContent.substring(docContent.indexOf(' '), docContent.length()));
+					tableFlag = true;
+					tmp = false;
+				}
+			}
+			if (docContent.trim().length() == 2) {
+				if (docContent.trim().substring(0, 2).equals("–¯±Ì")) {
+					tableFlag = true;
+					tmp = false;
+				}
+			}
 			if (tableFlag && tmp) {
 				
-				wdUtil.copyTableFromAnotherDoc("D:\\test.doc", 1);
-				wdUtil.openDocument("D:\\test.doc");
+				wdUtil.copyTableFromAnotherDoc(root, 1);
+				wdUtil.openDocument(root);
 				numOfParagraphs = wdUtil.getNumOfParagraphs();
-				wdUtil.openDocument("D:\\Êñá‰ª∂Ê®°Êùø.doc");
+				wdUtil.openDocument(simpleFile.replace("/", "\\"));
 				wdUtil.moveEnd();
 				tableFlag = false;
 				i--;
 			} else {
-				wdUtil.copyParagraphFromAnotherDoc("D:\\test.doc", i + 1);
+				wdUtil.copyParagraphFromAnotherDoc(root, i + 1);
 				tmp = true;
 			}
 			i++;
 		}
-		FileUtil.copy("D:\\test.docx", "D:\\test.doc");
+		FileUtil.copy(
+				root.substring(0,
+						root.lastIndexOf('/'))
+						+ "/‘≠∏Â/"
+						+ root.substring(
+								root.lastIndexOf('/'),
+								root.length()), root);
+		
 		
 	    System.out.println("Done");
 	    
-		wdUtil.fitContent();
-		wdUtil.fitTitle();
-		wdUtil.fitPic(picFit);
-		wdUtil.fitTable(tableFit);
-		wdUtil.fitNewTimes();
-		wdUtil.setTableStyle();
+
 		
 //		wdUtil.closeDocument();
 //		wdUtil.close();
+
 	}
 
 	public static void main(String[] args) {
-		new WorkTool().work("");
+		new WorkTool().work();
 	}
 }
