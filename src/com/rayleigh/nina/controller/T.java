@@ -9,6 +9,7 @@ public class T {
 	public static void main(String[] args) {
 		WordUtil wdUtil = new WordUtil(true);
 		wdUtil.openDocument("");
+		System.out.println("Test");
 	}
 
 }
