@@ -990,6 +990,30 @@ public class WordUtil {
 //		Dispatch paraRange = Dispatch.get(paragraph, "Range").toDispatch();
 	}
 	
+	public void pic() {
+		moveStart();
+		
+//		moveStart();
+//		Dispatch paragraphs = Dispatch.get(doc, "Paragraphs").toDispatch();
+//		Dispatch ParagraphFormat
+//		Dispatch.put(paragraphs, "LineSpacingRule", 4);
+//		Dispatch.put(paragraphs, "LineSpacing", 22);
+		
+		Dispatch shapes = Dispatch.get(doc, "Shapes").toDispatch();
+
+		int counts = Dispatch.get(shapes, "Count").getInt();
+		System.err.println(counts);
+		for (int i = 0; i < counts; i++) {
+			Dispatch shape = Dispatch.call(shapes, "Item",
+					new Variant(i + 1)).toDispatch();
+//			Dispatch shapeRange=Dispatch.get(shape, "ShapeRange").toDispatch();
+			Dispatch.call(shape, "Select");
+			Dispatch.call(shape, "ConvertToInlineShape");
+//			Dispatch line = Dispatch.get(selection, "PictureFormat").toDispatch();
+//			Dispatch.put(line, "Style", 1);
+		}
+	}
+	
 	public void fitPic(HashMap<String, String> picFit) {
 		if (picFit != null) {
 			moveStart();

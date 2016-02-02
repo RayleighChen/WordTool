@@ -8,7 +8,8 @@ public class T {
 
 	public static void main(String[] args) {
 		WordUtil wdUtil = new WordUtil(true);
-		wdUtil.openDocument("");
+		wdUtil.openDocument("D:\\¾«Ñ¡2.doc");
+		wdUtil.pic();
 		System.out.println("Test");
 	}
 
